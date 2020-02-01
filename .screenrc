@@ -1,0 +1,9 @@
+hardstatus string "[screen %n%?: %t%?]"
+startup_message off
+termcapinfo xterm* ti@:te@
+escape b
+defshell -bash
+shelltitle ">|bash"
+altscreen on
+deflogin off
+bindkey -m > eval "stuff ' '" writebuf "exec sh -c 'export DISPLAY=localhost:21.0; xsel < /tmp/screen-exchange'"
