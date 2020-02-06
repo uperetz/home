@@ -43,6 +43,7 @@ export PYTHONPATH=~/sources/AstroTools
 
 #Useful variables
 export EDITOR=vim
+export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
 
 #Useful aliases
 linediff() { 
@@ -119,10 +120,10 @@ elif [ -f ~/.git_completion.bash ]; then
 fi
 
 cd ~
-export https_proxy="$http_proxy"
 SHELL=$(which $SHELL)
 if [ -f "${HOME}/.bashrc.private" ]; then
     . "${HOME}/.bashrc.private"
 fi
+export https_proxy="$http_proxy"
 set_screen_window "Ready!"
 trap set_screen_window DEBUG
