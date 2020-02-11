@@ -31,19 +31,11 @@ else print $1 "/.../" $NF; }
 else print $0;}'"'"')'
 PS1='$(eval "echo ${MYPS}")>'
 
-# Aliases
-#
-# Some people use a different file for aliases
-if [ -f "${HOME}/.bash_aliases" ]; then
-    source "${HOME}/.bash_aliases"
-fi
-
 #general dirs
 export PYTHONPATH=~/sources/AstroTools
 
 #Useful variables
 export EDITOR=vim
-export XDG_RUNTIME_DIR="/tmp/runtime-$USER"
 
 #Useful aliases
 linediff() { 
@@ -65,6 +57,7 @@ alias ps2pdfall='for x in *.ps; do ps2pdf $x; done'
 alias py="python3"
 alias rp="realpath"
 alias vi="vim"
+alias imagej="setsid imagej &> /dev/null"
 alias gk="gitk --all &"
 alias glog="git log --all --decorate --oneline --graph"
 alias ctags="ctags -R --c-kinds=+p --c++-kinds=+pf --python-kinds=-i --fields=+iaS --extras=+q"
@@ -108,10 +101,6 @@ function append_path {
 }
 append_path ~/bin
 
-if [ -n "$DISPLAY" ]; then
-    xset b off
-fi
-
 #Git completion
 if [ -f /etc/bash_completion.d/git ]; then
     . /etc/bash_completion.d/git
@@ -125,5 +114,9 @@ if [ -f "${HOME}/.bashrc.private" ]; then
     . "${HOME}/.bashrc.private"
 fi
 export https_proxy="$http_proxy"
+if [ -z "$DISPLAY" ]; then
+    export DISPLAY="localhost:0"
+fi
+xset b off
 set_screen_window "Ready!"
 trap set_screen_window DEBUG

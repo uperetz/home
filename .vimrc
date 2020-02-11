@@ -4,6 +4,7 @@ filetype plugin on
 filetype plugin indent on
 "General editor definitions
 set autoindent
+set updatetime=100
 set nohlsearch
 set cindent
 set tabstop=4 
@@ -218,6 +219,11 @@ hi DiffText   cterm=none ctermfg=Green     ctermbg=LightBlue
 autocmd FileType python setlocal foldmethod=indent
 
 autocmd FileType * normal zR
+
+"HPP files
+if expand("%:e") == "hpp"
+    let g:syntastic_cpp_compiler_options .=  " -i".expand("%:r").".h"
+endif
 
 if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private
