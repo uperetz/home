@@ -34,9 +34,9 @@ set fdm=syntax
 vnoremap ak <ESC>?^\<bar>[^a-zA-Z0-9:_]<CR>lv/[^a-zA-Z0-9:_]<CR>h
 vnoremap af <ESC>?^\<bar>[^a-zA-Z0-9:_.]<CR>lv/[^a-zA-Z0-9:_.]<CR>h
 noremap <C-w>] :normal vak<CR>g<C-]>
-noremap <C-w>f :normal vaf<CR>g<C-]>
+noremap <C-w>f :normal vaf<CR>gf
 noremap <C-w><C-]> :split<bar>normal vak<CR>g<C-]>
-noremap <C-w><C-f> :split<bar>normal vaf<CR>g<C-]>
+noremap <C-w><C-f> :split<bar>normal vaf<CR>gf
 set autochdir
 
 let g:syntastic_python_python_exec = '/usr/bin/python3'

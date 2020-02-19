@@ -81,10 +81,6 @@ HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
 
 #Merge user Xresources
-userresources=.Xresources
-if [ -f $userresources ]; then
-    /usr/bin/xrdb -merge $userresources
-fi
 function pdfopt {
     pdf=$1
     gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=opt_$1 $1
@@ -116,6 +112,10 @@ fi
 export https_proxy="$http_proxy"
 if [ -z "$DISPLAY" ]; then
     export DISPLAY="localhost:0"
+fi
+userresources=.Xresources
+if [ -f $userresources ]; then
+    /usr/bin/xrdb -merge $userresources
 fi
 xset b off
 set_screen_window "Ready!"
