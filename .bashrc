@@ -47,7 +47,8 @@ linediff() {
     vimdiff "/tmp/$f1" "/tmp/$f2"
     rm "/tmp/$f1" "/tmp/$f2"
 }
-alias cdgit='cd $(git rev-parse --show-toplevel)'
+alias gitroot='git rev-parse --show-toplevel'
+alias cdgit='cd $(gitroot)'
 alias ps2pdf="ps2pdf -dEPSFitPage"
 alias ps2pdfall='for x in *.ps; do ps2pdf $x; rm $x; done'
 alias pdflatex="pdflatex -synctex=1 -interaction=nonstopmode"

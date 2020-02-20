@@ -50,6 +50,7 @@ let default_includes = ['../src', '../include', '../../src', '../../include']
 let g:syntastic_cpp_include_dirs = [] + default_includes
 let g:syntastic_c_include_dirs = [] + default_includes
 let g:syntastic_cpp_check_header = 1
+let g:syntastic_c_check_header = 1
 
 hi cursorcolumn ctermbg=LightRed
 hi comment ctermfg=Blue
@@ -219,11 +220,6 @@ hi DiffText   cterm=none ctermfg=Green     ctermbg=LightBlue
 autocmd FileType python setlocal foldmethod=indent
 
 autocmd FileType * normal zR
-
-"HPP files
-if expand("%:e") == "hpp"
-    let g:syntastic_cpp_compiler_options .=  " -i".expand("%:r").".h"
-endif
 
 if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private
