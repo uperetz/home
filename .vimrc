@@ -211,15 +211,20 @@ au BufRead,BufNewFile *.m setl ft=mma
 hi SpellBad cterm=bold ctermfg=Black ctermbg=LightRed
 
 "Make vimdiff normal
-hi DiffAdd    cterm=bold ctermfg=White     ctermbg=LightGreen
-hi DiffChange cterm=none ctermfg=NONE      ctermbg=LightBlue
-hi DiffDelete cterm=bold ctermfg=Red       ctermbg=LightRed
-hi DiffText   cterm=none ctermfg=Green     ctermbg=LightBlue
+hi DiffAdd    cterm=bold ctermfg=Black    ctermbg=LightGreen
+hi DiffChange cterm=none ctermfg=NONE     ctermbg=None
+hi DiffDelete cterm=bold ctermfg=Red      ctermbg=LightRed
+hi DiffText   cterm=none ctermfg=DarkBlue ctermbg=Green
+
+"gitgutter
+hi GitGutterAdd ctermfg=green
 
 "Python files
 autocmd FileType python setlocal foldmethod=indent
 
 autocmd FileType * normal zR
+
+set statusline="%f %l %c"
 
 if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private

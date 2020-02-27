@@ -36,6 +36,7 @@ export PYTHONPATH=~/sources/AstroTools
 
 #Useful variables
 export EDITOR=vim
+[ -f ~/.setup.py ] && export PYTHONSTARTUP=~/.setup.py
 
 #Useful aliases
 linediff() { 
