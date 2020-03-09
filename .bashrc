@@ -32,7 +32,7 @@ else print $0;}'"'"')'
 PS1='$(eval "echo ${MYPS}")>'
 
 #general dirs
-export PYTHONPATH=~/sources/AstroTools
+export PYTHONPATH=~/sources
 
 #Useful variables
 export EDITOR=vim
@@ -61,7 +61,7 @@ alias rp="realpath"
 alias vi="vim"
 alias imagej="setsid imagej &> /dev/null"
 alias gk="gitk --all &"
-alias glog="git log --all --decorate --oneline --graph"
+alias glog="git log --all --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%cr) <%an>' --branches"
 alias ctags="ctags -R --c-kinds=+p --c++-kinds=+pf --python-kinds=-i --fields=+iaS --extras=+q"
 
 # Shell aliases
@@ -106,7 +106,6 @@ elif [ -f ~/.git_completion.bash ]; then
     . ~/.git_completion.bash
 fi
 
-cd ~
 SHELL=$(which $SHELL)
 if [ -f "${HOME}/.bashrc.private" ]; then
     . "${HOME}/.bashrc.private"

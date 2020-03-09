@@ -216,6 +216,8 @@ hi DiffChange cterm=none ctermfg=NONE     ctermbg=None
 hi DiffDelete cterm=bold ctermfg=Red      ctermbg=LightRed
 hi DiffText   cterm=none ctermfg=DarkBlue ctermbg=Green
 
+set diffopt+=iwhite
+
 "gitgutter
 hi GitGutterAdd ctermfg=green
 
