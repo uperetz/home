@@ -37,9 +37,14 @@ set_screen_window() {
 #Setup terminal
 stty -ixon
 export MYPS='$(echo -n "${PWD/#$HOME/~}" | awk -F "/" '"'"'{
-if (length($0) > 14) { if (NF>4) print $1 "/" $2 "/.../" $(NF-1) "/" $NF;
-else if (NF>3) print $1 "/" $2 "/.../" $NF;
-else print $1 "/.../" $NF; }
+for (i=1; i<=NF; ++i)
+    if(length($i) > 14)
+        $i=substr($i,0,5) "..." substr($i,length($i)-5,length($i));
+if (length($0) > 14) {
+    if (NF>4) print $1 "/" $2 "/.../" $(NF-1) "/" $NF;
+    else if (NF>3) print $1 "/" $2 "/.../" $NF;
+    else print $1 "/.../" $NF; 
+}
 else print $0;}'"'"')'
 PS1='$(eval "echo ${MYPS}")>'
 
