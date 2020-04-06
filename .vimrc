@@ -31,8 +31,8 @@ set statusline+=%*
 set tags+=./tags;~,tags,~/.vim/tags/**/tags
 set fdm=syntax
 " Capture c++ qualifiers (for ctags)
-vnoremap ak <ESC>?^\<bar>[^a-zA-Z0-9:_]<CR>lv/[^a-zA-Z0-9:_]<CR>h
-vnoremap af <ESC>?^\<bar>[^a-zA-Z0-9:_.]<CR>lv/[^a-zA-Z0-9:_.]<CR>h
+vnoremap ak <ESC>?^\<bar>[^a-zA-Z0-9:_]<CR>lv/[^a-zA-Z0-9:_]\<bar>$<CR>h
+vnoremap af <ESC>?^\<bar>[^a-zA-Z0-9:_.]<CR>lv/[^a-zA-Z0-9:_.]\<bar>$<CR>h
 noremap <C-w>] :normal vak<CR>g<C-]>
 noremap <C-w>f :normal vaf<CR>gf
 noremap <C-w><C-]> :split<bar>normal vak<CR>g<C-]>

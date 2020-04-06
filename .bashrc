@@ -1,15 +1,5 @@
 [[ "$-" != *i* ]] && return
 
-set_screen_window() {
-    title_string=$1
-    if [[ "$TERM" == "screen"* ]]; then
-        [ -z "$title_string" ] && title_string="${BASH_COMMAND:0:20}"
-        printf '\ek%s\e\\' "$title_string"
-    else
-        [ -z "$title_string" ] && title_string="${BASH_COMMAND//[^[:print:]]/}"
-        printf "\033]0;%s\007" "$title_string"
-    fi 
-}
 # Setup screen
 if [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
     export PROMPT_COMMAND='/bin/echo -ne "\033k\033\0134"'
@@ -20,7 +10,29 @@ if [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
     exec screen
 else
     export PROMPT_COMMAND=''
+    if [[ "$TERM" == "screen"* ]]; then
+        screen_title_slicer() { echo "${1:0:20}"; }
+        screen_title_format='\ek%s\e\\'
+        screen_group() { screen -t "$1" //group; }
+        screen_mv() { screen -X group "$1"; }
+    else
+        screen_title_slicer() { echo "${1//[^[:print:]]/}"; } # Fix highlight on CentOS"
+        screen_title_format="\033]0;%s\007"
+    fi
 fi
+
+set_screen_window() {
+    title_string=$1
+    [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
+    [ "$title_string" == "fg" ] && job=($(jobs %% 2> /dev/null))
+    [ "$title_string" == "fg " ] && job=($(jobs "${title_string:3} 2> /dev/null"))
+    if [ -n "$job" ]; then
+        job=${job[@]:2}
+        title_string=$(screen_title_slicer "$job")
+    fi
+    printf "$screen_title_format" "$title_string"
+}
+# Fix highlight on CentOS"
 
 #Setup terminal
 stty -ixon
@@ -68,7 +80,7 @@ alias ctags="ctags -R --c-kinds=+p --c++-kinds=+pf --python-kinds=-i --fields=+i
 alias cp="cp -i"
 alias rm="rm -I"
 alias mv="mv -i"
-alias grep='grep --color --exclude-dir=__pycache__ --exclude=*.pyc --exclude=*.o --exclude=*.so --exclude=tags --exclude=*.swp --exclude-dir=CMakeFiles'
+alias grep='grep --color --exclude-dir=__pycache__ --exclude=*.pyc --exclude=*.o --exclude=*.so --exclude=tags --exclude=*.swp --exclude-dir=CMakeFiles --exclude-dir=.git'
 alias wget='wget --content-disposition'
 alias ls='ls -h --color=tty --group-directories-first'
 alias la='ls -A'
@@ -120,4 +132,5 @@ if [ -f $userresources ]; then
 fi
 xset b off
 set_screen_window "Ready!"
+trap 'set_screen_window "Ready!"' ERR
 trap set_screen_window DEBUG
