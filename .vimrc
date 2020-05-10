@@ -37,7 +37,6 @@ noremap <C-w>] :normal vak<CR>g<C-]>
 noremap <C-w>f :normal vaf<CR>gf
 noremap <C-w><C-]> :split<bar>normal vak<CR>g<C-]>
 noremap <C-w><C-f> :split<bar>normal vaf<CR>gf
-set autochdir
 
 let g:syntastic_python_python_exec = '/usr/bin/python3'
 let g:syntastic_always_populate_loc_list = 1
@@ -192,6 +191,11 @@ endif
 autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;vim '.Filename().'\007"'
 autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = 'vim ' . Filename()
 
+" Add the current file's directory to the path if not already present.
+autocmd BufRead *
+      \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
+      \ exec "set path+=".s:tempPath
+
 "C/++ definitions
 function! s:insert_gates()
   let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
@@ -218,6 +222,7 @@ hi DiffDelete cterm=bold ctermfg=Red      ctermbg=LightRed
 hi DiffText   cterm=none ctermfg=DarkBlue ctermbg=Green
 
 set diffopt+=iwhite
+autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
 "gitgutter
 hi GitGutterAdd ctermfg=green

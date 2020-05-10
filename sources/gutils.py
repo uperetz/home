@@ -49,16 +49,18 @@ ls = ArgLess(os.listdir, verbose=True)
 cd = os.chdir
 
 
-def history(start=0, end=None, concat=False):
+def history(start=0, end=None, find=None, concat=False):
     if end is None:
         end = rl.get_current_history_length()
     if start < 0:
         start += rl.get_current_history_length()
     if concat:
-        print(';'.join(rl.get_history_item(i+1) for i in range(start, end)))
+        print(';'.join(rl.get_history_item(i+1) for i in range(start, end)
+                       if find is None or find in rl.get_history_item(i+1)))
         return
     for i in range(start, end):
-        print(str(i+1)+":", rl.get_history_item(i+1))
+        if find is None or find in rl.get_history_item(i+1):
+            print(str(i+1)+":", rl.get_history_item(i+1))
 
 
 hist = ArgLess(history)

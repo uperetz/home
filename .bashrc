@@ -26,13 +26,14 @@ fi
 set_screen_window() {
     title_string=$1
     [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
-    [ "$title_string" == "fg" ] && job=($(jobs %% 2> /dev/null))
-    [ "$title_string" == "fg " ] && job=($(jobs "${title_string:3} 2> /dev/null"))
+    [ "$title_string" = "fg" ] && job=($(jobs %% 2> /dev/null))
+    [ "$title_string" = "fg " ] && job=($(jobs "${title_string:3} 2> /dev/null"))
     if [ -n "$job" ]; then
         job=${job[@]:2}
         title_string=$(screen_title_slicer "$job")
     fi
     printf "$screen_title_format" "$title_string"
+    unset job
 }
 # Fix highlight on CentOS"
 
