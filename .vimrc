@@ -51,6 +51,7 @@ let g:syntastic_cpp_include_dirs = [] + default_includes
 let g:syntastic_c_include_dirs = [] + default_includes
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_c_check_header = 1
+let g:syntastic_sh_shellcheck_args = "-x -e SC1090"
 
 hi cursorcolumn ctermbg=LightRed
 hi comment ctermfg=Blue
