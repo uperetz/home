@@ -32,6 +32,8 @@ set_screen_window() {
         job=${job[@]:2}
         title_string=$(screen_title_slicer "$job")
     fi
+    [ "${title_string::3}" = "cd " ] && title_string=$(realpath $(awk '{print $2}' <<< $title_string))
+    [ "$title_string" = "cd" ] && title_string=$(realpath ~)
     printf "$screen_title_format" "$title_string"
     unset job
 }
@@ -140,5 +142,5 @@ if [ -f $userresources ]; then
 fi
 xset b off
 set_screen_window "Ready!"
-trap 'set_screen_window "Ready!"' ERR
+trap 'set_screen_window "$PWD"' ERR
 trap set_screen_window DEBUG
