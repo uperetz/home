@@ -32,10 +32,11 @@ set_screen_window() {
         job=${job[@]:2}
         title_string=$(screen_title_slicer "$job")
     fi
-    [ "${title_string::3}" = "cd " ] && title_string=$(realpath $(awk '{print $2}' <<< $title_string))
+    [ "${title_string::3}" = "cd " ] && title_string=$(  eval cd $(awk '{print $2}' <<< "$title_string") &> /dev/null && pwd)
     [ "$title_string" = "cd" ] && title_string=$(realpath ~)
     printf "$screen_title_format" "$title_string"
     unset job
+    unset title_string
 }
 # Fix highlight on CentOS"
 
