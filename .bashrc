@@ -5,35 +5,34 @@
 # Setup screen
 if [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
     export PROMPT_COMMAND='/bin/echo -ne "\033k\033\0134"'
-    screen -r > /dev/null 
-    [ $? -eq 0 ] && exit
-    screen -x -p 0 > /dev/null
-    [ $? -eq 0 ] && exit
+    if screen -r > /dev/null; then exit; fi
+    if screen -x -p 0 > /dev/null; then exit; fi
     exec screen
 else
     export PROMPT_COMMAND=''
     if [[ "$TERM" == "screen"* ]]; then
         screen_title_slicer() { echo "${1:0:20}"; }
+        # shellcheck disable=SC1003
         screen_title_format='\ek%s\e\\'
         screen_group() { screen -t "$1" //group; }
         screen_mv() { screen -X group "$1"; }
     else
         screen_title_slicer() { echo "${1//[^[:print:]]/}"; } # Fix highlight on CentOS"
-        screen_title_format="\033]0;%s\007"
+        screen_title_format='\033]0;%s\007'
     fi
 fi
 
 set_screen_window() {
     title_string=$1
     [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
-    [ "$title_string" = "fg" ] && job=($(jobs %% 2> /dev/null))
-    [ "$title_string" = "fg " ] && job=($(jobs "${title_string:3} 2> /dev/null"))
-    if [ -n "$job" ]; then
-        job=${job[@]:2}
-        title_string=$(screen_title_slicer "$job")
+    [ "$title_string" = "fg" ] && read -ra job < <( jobs %% 2> /dev/null )
+    [ "$title_string" = "fg " ] && read -ra job < <(jobs "${title_string:3} 2> /dev/null")
+    if [ ${#job[@]} -gt 0 ]; then
+        title_string=$(screen_title_slicer "${job[2]}")
     fi
-    [ "${title_string::3}" = "cd " ] && title_string=$(  eval cd $(awk '{print $2}' <<< "$title_string") &> /dev/null && pwd)
+    [ "${title_string::3}" = "cd " ] && title_string=$(  eval cd "$(awk '{print $2}' <<< "$title_string")" &> /dev/null && pwd)
     [ "$title_string" = "cd" ] && title_string=$(realpath ~)
+        # shellcheck disable=SC2059
     printf "$screen_title_format" "$title_string"
     unset job
     unset title_string
@@ -42,6 +41,7 @@ set_screen_window() {
 
 #Setup terminal
 stty -ixon
+#shellcheck disable=SC2016
 export MYPS='$(echo -n "${PWD/#$HOME/~}" | awk -F "/" '"'"'{
 for (i=1; i<=NF; ++i)
     if(length($i) > 14)
@@ -107,16 +107,15 @@ shopt -s histappend
 
 #Merge user Xresources
 function pdfopt {
-    pdf=$1
-    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=opt_$1 $1
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=opt_"$1" "$1"
 }
 
 function append_path {
     PATH="$1:$PATH"
-    for f in $(ls $1/); do
+    for f in "$1"/*; do
         dir=$1
         if [[ -d $dir/$f/ ]]; then
-            append_path $dir/$f
+            append_path "$dir/$f"
         fi
     done 2> /dev/null
 }
@@ -124,16 +123,19 @@ append_path ~/bin
 
 #Git completion
 if [ -f /etc/bash_completion.d/git ]; then
+    # shellcheck disable=SC1091
     . /etc/bash_completion.d/git
 elif [ -f ~/.git_completion.bash ]; then
     . ~/.git_completion.bash
 fi
 
-SHELL=$(which $SHELL)
+SHELL=$(command -v "$SHELL")
 if [ -f "${HOME}/.bashrc.private" ]; then
     . "${HOME}/.bashrc.private"
 fi
+# shellcheck disable=SC2154
 export https_proxy="$http_proxy"
+export ftp_proxy="$http_proxy"
 if [ -z "$DISPLAY" ]; then
     export DISPLAY="localhost:0"
 fi
