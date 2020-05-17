@@ -179,10 +179,14 @@ function! Filename()
     if @% == ""
         return "noname"
     endif
-    return expand("%:t")
+    let is_tracked=system("git ls-files " . expand("%"))
+    if is_tracked == ""
+        return expand("%:t")
+    endif
+    return gitbranch#name() . "/" . expand("%:t")
 endfunction
 
-let &titlestring = "vim " . expand("%:t")
+let &titlestring = "vim " . Filename()
 if &term[:5] == "screen"
   set t_ts=k
   set t_fs=\
