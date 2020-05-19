@@ -113,9 +113,8 @@ function pdfopt {
 function append_path {
     PATH="$1:$PATH"
     for f in "$1"/*; do
-        dir=$1
-        if [[ -d $dir/$f/ ]]; then
-            append_path "$dir/$f"
+        if [ -d "$f" ]; then
+            append_path "$f"
         fi
     done 2> /dev/null
 }
