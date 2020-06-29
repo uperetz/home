@@ -33,7 +33,7 @@ set_screen_window() {
     [ "${title_string::3}" = "cd " ] && title_string=$(  eval cd "$(awk '{print $2}' <<< "$title_string")" &> /dev/null && pwd)
     [ "$title_string" = "cd" ] && title_string=$(realpath ~)
         # shellcheck disable=SC2059
-    printf "$screen_title_format" "$title_string"
+        printf "$screen_title_format" "$title_string" > "$(tty)"
     unset job
     unset title_string
 }
@@ -72,6 +72,7 @@ linediff() {
     rm "/tmp/$f1" "/tmp/$f2"
 }
 alias gitroot='git rev-parse --show-toplevel'
+alias gitsha='git rev-parse --short HEAD'
 alias cdgit='cd $(gitroot)'
 alias ps2pdf="ps2pdf -dEPSFitPage"
 alias ps2pdfall='for x in *.ps; do ps2pdf $x; rm $x; done'
@@ -128,7 +129,6 @@ elif [ -f ~/.git_completion.bash ]; then
     . ~/.git_completion.bash
 fi
 
-SHELL=$(command -v "$SHELL")
 if [ -f "${HOME}/.bashrc.private" ]; then
     . "${HOME}/.bashrc.private"
 fi
