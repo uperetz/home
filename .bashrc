@@ -33,7 +33,7 @@ set_screen_window() {
     [ "${title_string::3}" = "cd " ] && title_string=$(  eval cd "$(awk '{print $2}' <<< "$title_string")" &> /dev/null && pwd)
     [ "$title_string" = "cd" ] && title_string=$(realpath ~)
         # shellcheck disable=SC2059
-        printf "$screen_title_format" "$title_string" > "$(tty)"
+        printf "$screen_title_format" "$HOSTNAME -- $title_string" > "$(tty)"
     unset job
     unset title_string
 }
