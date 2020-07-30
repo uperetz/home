@@ -186,14 +186,14 @@ function! Filename()
     return gitbranch#name() . "/" . expand("%:t")
 endfunction
 
-let &titlestring = "vim " . Filename()
+let &titlestring = hostname() . " -- vim " . Filename()
 if &term[:5] == "screen"
   set t_ts=k
   set t_fs=\
   set title
 endif
-autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;vim '.Filename().'\007"'
-autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = 'vim ' . Filename()
+autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
+autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
 
 " Add the current file's directory to the path if not already present.
 autocmd BufRead *
