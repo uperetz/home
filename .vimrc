@@ -15,6 +15,7 @@ set number
 set t_vb=
 set vb
 set completeopt=longest,menuone
+set backupdir=$HOME/.vim/backup
 
 " Persistent undo
 set undofile
