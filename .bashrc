@@ -40,7 +40,7 @@ set_screen_window() {
     fi
     [ "$title_string" = "cd" ] && title_string=$ready && cwd=$HOME
     # shellcheck disable=SC2059
-    printf "$screen_title_format" "$HOSTNAME -- ${cwd//$HOME/~}> $title_string" > "$(tty)"
+    printf "$screen_title_format" "$HOSTNAME -- ${cwd//$HOME/\~}> $title_string" > "$(tty)"
     unset job
     unset title_string
 }
