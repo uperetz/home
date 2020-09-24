@@ -22,6 +22,8 @@ else
     fi
 fi
 
+ready="Ready!"
+
 set_screen_window() {
     title_string=$1
     [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
@@ -30,10 +32,15 @@ set_screen_window() {
     if [ ${#job[@]} -gt 0 ]; then
         title_string=$(screen_title_slicer "${job[2]}")
     fi
-    [ "${title_string::3}" = "cd " ] && title_string=$(  eval cd "$(awk '{print $2}' <<< "$title_string")" &> /dev/null && pwd)
-    [ "$title_string" = "cd" ] && title_string=$(realpath ~)
-        # shellcheck disable=SC2059
-        printf "$screen_title_format" "$HOSTNAME -- $title_string" > "$(tty)"
+    cwd=$PWD
+    if [ "${title_string::3}" = "cd " ]; then
+        cwd=$(  eval cd "$(awk '{print $2}' <<< "$BASH_COMMAND")" &> /dev/null && pwd)
+        [ -z "$cwd" ] && cwd=$PWD
+        title_string="$ready"
+    fi
+    [ "$title_string" = "cd" ] && title_string=$ready && cwd=$HOME
+    # shellcheck disable=SC2059
+    printf "$screen_title_format" "$HOSTNAME -- ${cwd//$HOME/~}> $title_string" > "$(tty)"
     unset job
     unset title_string
 }
@@ -143,6 +150,7 @@ if [ -f $userresources ]; then
     /usr/bin/xrdb -merge $userresources
 fi
 xset b off
-set_screen_window "Ready!"
-trap 'set_screen_window "$PWD"' ERR
+set_screen_window "$ready"
+# shellcheck disable=SC2064
+trap "set_screen_window $ready" ERR
 trap set_screen_window DEBUG
