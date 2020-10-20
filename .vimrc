@@ -182,9 +182,10 @@ function! Filename()
     endif
     let is_tracked=system("git ls-files " . expand("%"))
     if is_tracked == ""
-        return expand("%:t")
+        return expand("%:~")
     endif
-    return gitbranch#name() . "/" . expand("%:t")
+    let gitroot=fnamemodify(gitbranch#dir(expand("%:p")),":h")
+    return gitbranch#name() . ' @ ' . expand("%:p:s?".gitroot.'/??')
 endfunction
 
 let &titlestring = hostname() . " -- vim " . Filename()

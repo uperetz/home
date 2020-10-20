@@ -11,7 +11,7 @@ if [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
 else
     export PROMPT_COMMAND=''
     if [[ "$TERM" == "screen"* ]]; then
-        screen_title_slicer() { echo "${1:0:20}"; }
+        screen_title_slicer() { echo "${1}"; }
         # shellcheck disable=SC1003
         screen_title_format='\ek%s\e\\'
         screen_group() { screen -t "$1" //group; }
