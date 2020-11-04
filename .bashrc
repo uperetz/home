@@ -142,9 +142,14 @@ fi
 # shellcheck disable=SC2154
 export https_proxy="$http_proxy"
 export ftp_proxy="$http_proxy"
-if [ -z "$DISPLAY" ]; then
-    export DISPLAY="localhost:0"
+
+if [[ $(uname -r) = *microsoft-standard  ]]; then
+    ipaddress=$(grep -m 1 nameserver /etc/resolv.conf | cut -d" " -f2)
+    export DISPLAY="${ipaddress##* }:0.0"
+elif [ -z "$DISPLAY" ]; then
+    export DISPLAY="localhost:0.0"
 fi
+
 userresources=.Xresources
 if [ -f $userresources ]; then
     /usr/bin/xrdb -merge $userresources
