@@ -144,6 +144,7 @@ export https_proxy="$http_proxy"
 export ftp_proxy="$http_proxy"
 
 if [[ $(uname -r) = *microsoft-standard  ]]; then
+    # WSL 2 + XMING shennenigans
     ipaddress=$(grep -m 1 nameserver /etc/resolv.conf | cut -d" " -f2)
     export DISPLAY="${ipaddress##* }:0.0"
 elif [ -z "$DISPLAY" ]; then
@@ -154,7 +155,7 @@ userresources=.Xresources
 if [ -f $userresources ]; then
     /usr/bin/xrdb -merge $userresources
 fi
-xset b off
+# xset b off
 set_screen_window "$ready"
 # shellcheck disable=SC2064
 trap "set_screen_window $ready" ERR

@@ -230,6 +230,9 @@ hi DiffText   cterm=none ctermfg=DarkBlue ctermbg=Green
 set diffopt+=iwhite
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
+"Jump to last known position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
 "gitgutter
 hi GitGutterAdd ctermfg=green
 
