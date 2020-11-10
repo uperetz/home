@@ -52,6 +52,7 @@ let g:syntastic_c_include_dirs = [] + default_includes
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_c_check_header = 1
 let g:syntastic_sh_shellcheck_args = "-x -e SC1090"
+let g:syntastic_cpp_config_file=".syntastic_cpp_config"
 
 hi cursorcolumn ctermbg=LightRed
 hi comment ctermfg=Blue
@@ -238,6 +239,10 @@ hi GitGutterAdd ctermfg=green
 
 "Python files
 autocmd FileType python setlocal foldmethod=indent
+
+"Cuda files
+au BufNewFile,BufRead *.cu set ft=cuda
+au BufNewFile,BufRead *.cuh set ft=cuda
 
 autocmd FileType * normal zR
 

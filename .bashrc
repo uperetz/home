@@ -24,7 +24,12 @@ fi
 
 ready="Ready!"
 
+# Also saves history!
 set_screen_window() {
+    history -a
+    history -c
+    history -r
+
     title_string=$1
     [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
     [ "$title_string" = "fg" ] && read -ra job < <( jobs %% 2> /dev/null )
