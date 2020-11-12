@@ -26,9 +26,7 @@ ready="Ready!"
 
 # Also saves history!
 set_screen_window() {
-    history -a
-    history -c
-    history -r
+    echo "$BASH_COMMAND" >> ~/.master_history
 
     title_string=$1
     [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
