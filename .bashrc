@@ -26,7 +26,13 @@ ready="Ready!"
 
 # Also saves history!
 set_screen_window() {
-    echo "$BASH_COMMAND" >> ~/.master_history
+    case $BASH_COMMAND in
+        *.master_history) ;;
+        mhistory*) ;;
+        fhistory*) ;;
+        *)
+            echo "$BASH_COMMAND" >> ~/.master_history
+    esac
 
     title_string=$1
     [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
@@ -72,6 +78,17 @@ export EDITOR=vim
 [ -f ~/.setup.py ] && export PYTHONSTARTUP=~/.setup.py
 
 #Useful aliases
+mhistory() {
+    tail -n "${1:-10}" ~/.master_history
+}
+fhistory() {
+    if [ -n "$2" ]; then
+        grep "$1" ~/.master_history | tail -n "$2"
+    else
+        grep "$1" ~/.master_history
+    fi
+}
+
 linediff() { 
     if [ -z "$1" ] || [ -z "$2" ]; then return; fi
     f1=$(basename "$1")
