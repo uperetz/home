@@ -211,7 +211,7 @@ function! s:insert_gates()
   execute "normal! Go#endif /* " . gatename . " */"
   normal! kk
 endfunction
-autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+autocmd BufNewFile *.{h,hpp,cuh} call <SID>insert_gates()
 
 "Makefiles
 autocmd FileType make setlocal noexpandtab
