@@ -183,7 +183,11 @@ function! Filename()
     endif
     let is_tracked=system("git ls-files " . expand("%"))
     if is_tracked == ""
-        return expand("%:~")
+        let path = expand("%:~")
+        if path[0] == "!"
+            return strpart(path, 1)
+        endif
+        return path
     endif
     let gitroot=fnamemodify(gitbranch#dir(expand("%:p")),":h")
     return gitbranch#name() . ' @ ' . expand("%:p:s?".gitroot.'/??')
