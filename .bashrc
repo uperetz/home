@@ -83,9 +83,9 @@ mhistory() {
 }
 fhistory() {
     if [ -n "$2" ]; then
-        grep "$1" ~/.master_history | tail -n "$2"
+        grep -- "$1" ~/.master_history | tail -n "$2"
     else
-        grep "$1" ~/.master_history
+        grep -- "$1" ~/.master_history
     fi
 }
 

@@ -15,7 +15,9 @@ set number
 set t_vb=
 set vb
 set completeopt=longest,menuone
+set backup
 set backupdir=$HOME/.vim/backup
+set dir=$HOME/.vim/backup
 
 " Persistent undo
 set undofile
@@ -217,6 +219,41 @@ function! s:insert_gates()
 endfunction
 autocmd BufNewFile *.{h,hpp,cuh} call <SID>insert_gates()
 
+function! ShowFuncName()
+  let strList = ["while", "foreach", "ifelse", "if else", "for", "if", "else", "try", "catch", "case", "switch"]
+  let foundcontrol = 1
+  let position = ""
+  let pos=getpos(".")          " This saves the cursor position
+  let view=winsaveview()       " This saves the window view
+  while (foundcontrol)
+    let foundcontrol = 0
+    normal [{
+    call search('\S','bW')
+    let tempchar = getline(".")[col(".") - 1]
+    if (match(tempchar, ")") >=0 )
+      normal %
+      call search('\S','bW')
+    endif
+    let tempstring = getline(".")
+    for item in strList
+      if( match(tempstring,item) >= 0 )
+        let position = item
+        let foundcontrol = 1
+        break
+      endif
+    endfor
+    if(foundcontrol == 0)
+      call cursor(pos)
+      call winrestview(view)
+      return tempstring
+    endif
+  endwhile
+  call cursor(pos)
+  call winrestview(view)
+  return tempstring
+endfunction
+map f :echo ShowFuncName() <CR>
+
 "Makefiles
 autocmd FileType make setlocal noexpandtab
 
@@ -255,3 +292,12 @@ set statusline="%f %l %c"
 if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private
 endif
+
+let g:syntastic_java_javac_config_file_enabled = 1
+function! FindConfig(what, where)
+    return findfile(a:what, escape(a:where, ' ') . ';')
+endfunction
+
+autocmd FileType java let g:syntastic_java_javac_config_file = FindConfig('.syntastic_javac_config', expand('<afile>:p:h', 1))
+
+autocmd FileType java execute "if filereadable('".g:syntastic_java_javac_config_file."') | source ".g:syntastic_java_javac_config_file." | endif"
