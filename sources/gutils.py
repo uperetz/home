@@ -1,4 +1,8 @@
-from time import clock
+try:
+    from time import clock as clocker
+except ImportError:
+    from time import perf_counter as clocker
+
 from itertools import tee
 from inspect import getsourcelines
 from os import getcwd
@@ -7,7 +11,7 @@ from pkgutil import iter_modules
 from glob import glob
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from importlib import reload
 import sys
 import os
@@ -158,12 +162,12 @@ def timer(com, iters=1):
     got_e = None
     t = 0
     for _ in range(iters):
-        begin = clock()
+        begin = clocker()
         try:
             com()
-            end = clock()
+            end = clocker()
         except Exception as e:
-            end = clock()
+            end = clocker()
             got_e = e
         t += (end-begin)
     if got_e is not None:

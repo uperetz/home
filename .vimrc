@@ -27,9 +27,6 @@ set undoreload=10000
 syntax on
 highlight LineNr ctermfg=red
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 set tags+=./tags;~,tags,~/.vim/tags/**/tags
 set fdm=syntax
@@ -55,6 +52,11 @@ let g:syntastic_cpp_check_header = 1
 let g:syntastic_c_check_header = 1
 let g:syntastic_sh_shellcheck_args = "-x -e SC1090"
 let g:syntastic_cpp_config_file=".syntastic_cpp_config"
+
+function! SyntasticToggleError()
+    let g:syntastic_echo_current_error=1-g:syntastic_echo_current_error
+    SyntasticCheck
+endfunction
 
 hi cursorcolumn ctermbg=LightRed
 hi comment ctermfg=Blue
@@ -133,12 +135,13 @@ endfunction
 nnoremap <F2> :call Title_bar()<CR>
 nnoremap <F3> :call Col_bar(nr2char(getchar()))<CR>
 nnoremap <F4> :call Title_destroy()<CR>
+nnoremap <F9> :call SyntasticToggleError()<CR>
 nnoremap <F10> :SyntasticToggleMode<CR>
 nnoremap <F11> :lclose<CR>
 nnoremap <F12> :set invnumber invpaste<CR>
 command! -nargs=1 Compare :call Compare(<f-args>)
 command! UnCompare :call UnCompare()
-nnoremap <F9> :UnCompare<CR>
+nnoremap <F8> :UnCompare<CR>
 
 function! Brace_close()
     let newpos = getpos('.')
@@ -203,6 +206,7 @@ if &term[:5] == "screen"
 endif
 autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
 autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
+auto VimLeave * let &titleold=getcwd() . "> ready!"
 
 " Add the current file's directory to the path if not already present.
 autocmd BufRead *
@@ -263,6 +267,9 @@ au BufRead,BufNewFile *.m setl ft=mma
 "Syntastic red highlighting change
 hi SpellBad cterm=bold ctermfg=Black ctermbg=LightRed
 
+"Fold column color
+hi FolColumn ctermbg=Black ctermfg=Black
+
 "Make vimdiff normal
 hi DiffAdd    cterm=bold ctermfg=Black    ctermbg=LightGreen
 hi DiffChange cterm=none ctermfg=NONE     ctermbg=None
@@ -286,8 +293,6 @@ au BufNewFile,BufRead *.cu set ft=cuda
 au BufNewFile,BufRead *.cuh set ft=cuda
 
 autocmd FileType * normal zR
-
-set statusline="%f %l %c"
 
 if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private
