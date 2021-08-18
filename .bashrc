@@ -82,10 +82,16 @@ mhistory() {
     tail -n "${1:-10}" ~/.master_history
 }
 fhistory() {
+    context=
+    [ -n "$3" ] && context="-A$3 -B$3"
     if [ -n "$2" ]; then
-        grep -- "$1" ~/.master_history | tail -n "$2"
+        amount=$2
+        [ -n "$context" ] && amount=$(( ($3*2+1) * amount))
+        # shellcheck disable=SC2086
+        grep $context -- "$1" ~/.master_history | tail -n "$amount"
     else
-        grep -- "$1" ~/.master_history
+        # shellcheck disable=SC2086
+        grep $context -- "$1" ~/.master_history
     fi
 }
 
@@ -102,9 +108,10 @@ alias gitroot='git rev-parse --show-toplevel'
 alias gitsha='git rev-parse --short HEAD'
 alias cdgit='cd $(gitroot)'
 alias ps2pdf="ps2pdf -dEPSFitPage"
-alias ps2pdfall='for x in *.ps; do ps2pdf $x; rm $x; done'
 alias pdflatex="pdflatex -synctex=1 -interaction=nonstopmode"
-alias ps2pdfall='for x in *.ps; do ps2pdf $x; done'
+# shellcheck disable=SC2154
+# No idea why it's complaining about 'x' not being assigned.
+alias ps2pdfall='for x in *.ps; do ps2pdf $x; rm $x; done'
 
 # Application aliases
 alias py="python3"
@@ -112,7 +119,7 @@ alias rp="realpath"
 alias vi="vim"
 alias imagej="setsid imagej &> /dev/null"
 alias gk="gitk --all &"
-alias glog="git log --all --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%cr) <%an>' --branches"
+alias glog="git log --all --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%cd) <%an>' --branches --date=format:'%H:%M %d/%m/%y'"
 alias ctags="ctags -R --c-kinds=+p --c++-kinds=+pf --python-kinds=-i --fields=+iaS --extras=+q"
 
 # Shell aliases

@@ -45,7 +45,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_c_compiler_options = '-std=c99 -Wall -Werror -Wextra -pedantic'
 let g:syntastic_cpp_compiler_options = '-std=c++17 -Wall -Werror -Wextra -pedantic'
-let default_includes = ['../src', '../include', '../../src', '../../include']
+let default_includes = ['../src', '../include', '../../src', '../../include', 'src', '../../../src'] 
 let g:syntastic_cpp_include_dirs = [] + default_includes
 let g:syntastic_c_include_dirs = [] + default_includes
 let g:syntastic_cpp_check_header = 1
@@ -138,7 +138,7 @@ nnoremap <F4> :call Title_destroy()<CR>
 nnoremap <F9> :call SyntasticToggleError()<CR>
 nnoremap <F10> :SyntasticToggleMode<CR>
 nnoremap <F11> :lclose<CR>
-nnoremap <F12> :set invnumber invpaste<CR>
+nnoremap <F12> :set invnumber invpaste<CR> :GitGutterToggle<CR>
 command! -nargs=1 Compare :call Compare(<f-args>)
 command! UnCompare :call UnCompare()
 nnoremap <F8> :UnCompare<CR>
