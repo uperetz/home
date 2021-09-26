@@ -119,7 +119,8 @@ alias rp="realpath"
 alias vi="vim"
 alias imagej="setsid imagej &> /dev/null"
 alias gk="gitk --all &"
-alias glog="git log --all --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%cd) <%an>' --branches --date=format:'%H:%M %d/%m/%y'"
+alias glog="git log --all --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%cr) <%an>' --date=format:'%H:%M %d/%m/%y' --branches"
+alias glogc="git log --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%cr) <%an>' --date=format:'%H:%M %d/%m/%y'"
 alias ctags="ctags -R --c-kinds=+p --c++-kinds=+pf --python-kinds=-i --fields=+iaS --extras=+q"
 
 # Shell aliases
