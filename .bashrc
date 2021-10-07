@@ -156,6 +156,38 @@ function append_path {
 }
 append_path ~/bin
 
+# Transfer
+# Suggested usage in local rc, using servers used:
+#   declare -A servers
+#   servers[SG4]='nmadmin@3.213.40.102'
+#
+#   for server in "${!servers[@]}"; do
+#       # shellcheck disable=SC2139
+#       # We want this to expand
+#       alias "$server=ssh -X ${servers[$server]}"
+#       eval function "put${server} { putserver \"${servers[$server]}\" \"\$@\"; }"
+#       eval function "get${server} { getserver \"${servers[$server]}\" \"\$@\"; }"
+#   done
+
+function putserver {
+    server=$1
+    shift
+    args=$(($#-1))
+    [ "$args" -lt 1 ] && echo "Must provide out path explicitly" && return
+    sources=( "$@" )
+    o=${sources[${#sources[@]}-1]}
+    unset 'sources[${#sources[@]}-1]'
+    rsync -p -r -P -m "${sources[@]}" "$server:$o"
+}
+
+function getserver { 
+    server=$1
+    shift
+    o=$2;
+    [ -z "$o" ] && o="./";
+    rsync -p -r -P -m "$server:$1" "$o"
+}
+
 #Git completion
 if [ -f /etc/bash_completion.d/git ]; then
     # shellcheck disable=SC1091
