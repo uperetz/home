@@ -18,6 +18,7 @@ set completeopt=longest,menuone
 set backup
 set backupdir=$HOME/.vim/backup
 set dir=$HOME/.vim/backup
+set mouse=
 
 " Persistent undo
 set undofile
