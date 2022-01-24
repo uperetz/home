@@ -17,6 +17,7 @@ set vb
 set completeopt=longest,menuone
 set backup
 set backupdir=$HOME/.vim/backup
+call mkdir(&backupdir, 'p')
 set dir=$HOME/.vim/backup
 set mouse=
 
