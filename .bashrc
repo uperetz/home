@@ -3,7 +3,7 @@
 [[ "$-" != *i* ]] && return
 
 # Setup screen
-if [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
+if command -v screen &> /dev/null && [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
     export PROMPT_COMMAND='/bin/echo -ne "\033k\033\0134"'
     if screen -r > /dev/null; then exit; fi
     if screen -x -p 0 > /dev/null; then exit; fi
