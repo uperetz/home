@@ -1,4 +1,7 @@
-from time import clock
+try:
+    from time import clock
+except ImportError:
+    from time import perf_counter as clock
 from itertools import tee
 from inspect import getsourcelines
 from os import getcwd
@@ -11,6 +14,9 @@ import matplotlib.pyplot as plt
 from importlib import reload
 import sys
 import os
+
+# Avoid linter errors
+[np, pd, plt, glob, reload, sys]
 
 
 def list_modules(pkg):
@@ -171,15 +177,16 @@ def timer(com, iters=1):
     return t/iters
 
 
-def timelist(l):
+def timelist(lst):
     def check():
-        for _ in l:
+        for _ in lst:
             pass
     return check
 
 
 class RomanConversion(object):
     numerals = (('M', 1000), ('D', 500), ('C', 100), ('L', 50), ('X', 10), ('V', 5), ('I', 1))
+
     @staticmethod
     def toRoman(num):
         numerals = RomanConversion.numerals
