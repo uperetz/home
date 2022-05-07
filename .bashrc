@@ -203,10 +203,9 @@ fi
 export https_proxy="$http_proxy"
 export ftp_proxy="$http_proxy"
 
-if [[ $(uname -r) = *microsoft-standard  ]]; then
+if [[ $(uname -r) = *microsoft-standard* ]]; then
     # WSL 2 + XMING shennenigans
-    ipaddress=$(grep -m 1 nameserver /etc/resolv.conf | cut -d" " -f2)
-    export DISPLAY="${ipaddress##* }:0.0"
+    export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf):0.0"
 elif [ -z "$DISPLAY" ]; then
     export DISPLAY="localhost:0.0"
 fi
