@@ -24,6 +24,7 @@ set mouse=
 " Persistent undo
 set undofile
 set undodir=$HOME/.vim/undo
+call mkdir(&undodir, 'p')
 set undolevels=1000
 set undoreload=10000
 syntax on
