@@ -194,7 +194,7 @@ function! Brace_close()
     while newpos[2] != getpos('.')[2] + cnt
         let str .= " "
         let cnt += 1
-      endwhile
+    endwhile
     let spaces = repeat(" ", g:my_personal_global_indent_width-1)
     return str.spaces
 endfunction!
@@ -324,6 +324,14 @@ autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
 "Jump to last known position
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+"signify
+nnoremap <C-g>d :SignifyHunkDiff<cr>
+nnoremap <C-g>u :SignifyHunkUndo<cr>
+omap ic <plug>(signify-motion-inner-pending)
+xmap ic <plug>(signify-motion-inner-visual)
+omap ac <plug>(signify-motion-outer-pending)
+xmap ac <plug>(signify-motion-outer-visual)
 
 "gitgutter
 hi GitGutterAdd ctermfg=green
