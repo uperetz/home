@@ -4,3 +4,6 @@
 	prompt = false
 [diff]
 	tool = vimdiff
+[user]
+	name = Uria Pur
+	email = peretz.uria@gmail.com
