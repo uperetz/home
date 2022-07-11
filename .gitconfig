@@ -1,0 +1,6 @@
+[merge]
+	tool = vimdiff
+[mergetool]
+	prompt = false
+[diff]
+	tool = vimdiff
