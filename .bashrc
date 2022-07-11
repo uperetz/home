@@ -58,7 +58,7 @@ set_screen_window() {
 #Setup terminal
 stty -ixon
 #shellcheck disable=SC2016
-export MYPS='$(echo -n "${PWD/#$HOME/~}" | awk -F "/" '"'"'{
+export MYPS='$(echo -n "${PWD/#$HOME/\~}" | awk -F "/" '"'"'{
 for (i=1; i<=NF; ++i)
     if(length($i) > 14)
         $i=substr($i,0,5) "..." substr($i,length($i)-5,length($i));
