@@ -2,10 +2,8 @@
 
 function screen_server_pid() {
   pid=$PPID
-  while [ $pid -ne 0 ]
-  do
-    if $(ps u $pid | grep -q SCREEN)
-    then
+  while [ $pid -ne 0 ]; do
+    if pgrep -f -c '^SCREEN$' > /dev/null; then
       echo "$pid"
       return
     fi
@@ -15,24 +13,21 @@ function screen_server_pid() {
 }
 
 function screen_client_pts() {
-  for pid in /proc/$(screen_server_pid)/fd/*
-  do
-    l=$(readlink $pid)
-    if [[ $l =~ "pts" ]]
-    then
-      echo $l | cut -d / -f 3-
+  for pid in "/proc/$(screen_server_pid)/fd"/*; do
+    l=$(readlink "$pid")
+    if [[ $l =~ "pts" ]]; then
+      echo "$l" | cut -d / -f 3-
       return
     fi
   done
 }
 
 function screen_client_pid() {
-  ps a | grep screen | grep "$(screen_client_pts) " | awk '{print $1}'
+  pgrep -t "$(screen_client_pts)" -f "^screen " | awk '{print $1}'
 }
 
-screen_client_env="/proc/$(screen_client_pid)/environ"
-
 function get_screen_client_env() {
+  screen_client_env="/proc/$(screen_client_pid)/environ"
   value=$(tr '\0' '\n' <"$screen_client_env" | awk -F= "/^$1=/ {print \$2}")
   eval "export '$1=$value'"
 }
