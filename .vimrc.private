@@ -1,0 +1,28 @@
+source /usr/share/vim/google/google.vim
+
+Glug codefmt
+Glug codefmt-google
+augroup autoformat_settings
+  autocmd FileType borg,gcl,patchpanel AutoFormatBuffer gclfmt
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,javascript,typescript AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType jslayout AutoFormatBuffer jslfmt
+  autocmd FileType markdown AutoFormatBuffer mdformat
+  autocmd FileType ncl AutoFormatBuffer nclfmt
+  autocmd FileType python AutoFormatBuffer pyformat
+  autocmd FileType soy AutoFormatBuffer soyfmt
+  autocmd FileType textpb AutoFormatBuffer text-proto-format
+  autocmd FileType proto AutoFormatBuffer protofmt
+  autocmd FileType sql AutoFormatBuffer format_sql
+  autocmd FileType html,css,json AutoFormatBuffer js-beautify
+augroup END
+Glug g4
+Glug syntastic-google
+Glug blaze plugin[mappings]
+
+" Syntastic includes
+let g:syntastic_cpp_compiler_options .= " -DGOOGLE3_SUPPORTED_TOOLCHAIN -DGUNIT_NO_GOOGLE3"
+let g:syntastic_cpp_include_dirs += ['/google/src/files/head/depot/google3']
