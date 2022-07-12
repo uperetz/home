@@ -13,7 +13,6 @@ Plugin 'ycm-core/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 filetype plugin on
 "
@@ -27,7 +26,6 @@ filetype plugin on
 " Put your non-Plugin stuff after this line
 
 execute pathogen#infect()
-filetype plugin indent on
 "General editor definitions
 set autoindent
 set updatetime=100
@@ -346,3 +344,4 @@ endfunction
 autocmd FileType java let g:syntastic_java_javac_config_file = FindConfig('.syntastic_javac_config', expand('<afile>:p:h', 1))
 
 autocmd FileType java execute "if filereadable('".g:syntastic_java_javac_config_file."') | source ".g:syntastic_java_javac_config_file." | endif"
+filetype plugin indent on
