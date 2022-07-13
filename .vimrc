@@ -10,6 +10,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'ycm-core/YouCompleteMe'
+Plugin 'mhinz/vim-signify'
+Plugin 'csexton/trailertrash.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -27,12 +29,13 @@ filetype plugin on
 
 execute pathogen#infect()
 "General editor definitions
+let g:my_personal_global_indent_width = 4
 set autoindent
 set updatetime=100
 set nohlsearch
 set cindent
-set tabstop=4 
-set shiftwidth=4 
+let &tabstop=g:my_personal_global_indent_width
+let &shiftwidth=g:my_personal_global_indent_width
 set nostartofline
 set expandtab
 set number
@@ -83,13 +86,14 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_c_compiler_options = '-std=c99 -Wall -Werror -Wextra -pedantic'
 let g:syntastic_cpp_compiler_options = '-std=c++17 -Wall -Werror -Wextra -pedantic'
-let default_includes = ['../src', '../include', '../../src', '../../include', 'src', '../../../src'] 
+let default_includes = ['../src', '../include', '../../src', '../../include', 'src', '../../../src']
 let g:syntastic_cpp_include_dirs = [] + default_includes
 let g:syntastic_c_include_dirs = [] + default_includes
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_c_check_header = 1
 let g:syntastic_sh_shellcheck_args = "-x -e SC1090"
 let g:syntastic_cpp_config_file=".syntastic_cpp_config"
+let g:syntastic_enable_highlighting=1
 
 function! SyntasticToggleError()
     let g:syntastic_echo_current_error=1-g:syntastic_echo_current_error
@@ -105,7 +109,7 @@ function! Title_destroy()
     let oldpos = getpos('.')
     wincmd k
     wincmd j
-    hide 
+    hide
     call setpos('.',oldpos)
     set nocul
     set nocuc
@@ -188,11 +192,12 @@ function! Brace_close()
     let cnt = 0
     let str = ""
     while newpos[2] != getpos('.')[2] + cnt
-        let str .= " " 
+        let str .= " "
         let cnt += 1
-    endwhile
-    return str."   "
-endfunction! 
+      endwhile
+    let spaces = repeat(" ", g:my_personal_global_indent_width-1)
+    return str.spaces
+endfunction!
 
 inoremap {<CR>    {<CR><CR>}<C-R>=Brace_close()<CR>
 inoremap {        {}<Left>
@@ -330,11 +335,9 @@ autocmd FileType python setlocal foldmethod=indent
 au BufNewFile,BufRead *.cu set ft=cuda
 au BufNewFile,BufRead *.cuh set ft=cuda
 
+"Generic
 autocmd FileType * normal zR
-
-if filereadable($HOME . "/.vimrc.private")
-    source ~/.vimrc.private
-endif
+autocmd BufWritePost * :TrailerTrim
 
 let g:syntastic_java_javac_config_file_enabled = 1
 function! FindConfig(what, where)
@@ -344,4 +347,9 @@ endfunction
 autocmd FileType java let g:syntastic_java_javac_config_file = FindConfig('.syntastic_javac_config', expand('<afile>:p:h', 1))
 
 autocmd FileType java execute "if filereadable('".g:syntastic_java_javac_config_file."') | source ".g:syntastic_java_javac_config_file." | endif"
+
+if filereadable($HOME . "/.vimrc.private")
+    source ~/.vimrc.private
+  endif
+
 filetype plugin indent on
