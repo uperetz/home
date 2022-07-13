@@ -21,8 +21,12 @@ augroup autoformat_settings
 augroup END
 Glug g4
 Glug syntastic-google
+Glug youcompleteme-google
 Glug blaze plugin[mappings]
 
 " Syntastic includes
 let g:syntastic_cpp_compiler_options .= " -DGOOGLE3_SUPPORTED_TOOLCHAIN -DGUNIT_NO_GOOGLE3"
 let g:syntastic_cpp_include_dirs += ['/google/src/files/head/depot/google3']
+
+" Turn on YCM for c++
+let g:ycm_show_diagnostics_ui = 1

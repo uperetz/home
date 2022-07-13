@@ -9,7 +9,6 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'ycm-core/YouCompleteMe'
 Plugin 'mhinz/vim-signify'
 Plugin 'csexton/trailertrash.vim'
 Plugin 'vim-syntastic/syntastic'
