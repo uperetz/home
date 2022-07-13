@@ -326,8 +326,8 @@ autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 "signify
-nnoremap <C-g>d :SignifyHunkDiff<cr>
-nnoremap <C-g>u :SignifyHunkUndo<cr>
+nnoremap <leader>gd :SignifyHunkDiff<cr>
+nnoremap <leader>gu :SignifyHunkUndo<cr>
 omap ic <plug>(signify-motion-inner-pending)
 xmap ic <plug>(signify-motion-inner-visual)
 omap ac <plug>(signify-motion-outer-pending)
