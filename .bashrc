@@ -197,6 +197,7 @@ elif [ -f ~/.git_completion.bash ]; then
 fi
 
 if [ -f "${HOME}/.bashrc.private" ]; then
+    # shellcheck disable=SC1091
     . "${HOME}/.bashrc.private"
 fi
 # shellcheck disable=SC2154
@@ -205,7 +206,8 @@ export ftp_proxy="$http_proxy"
 
 if [[ $(uname -r) = *microsoft-standard* ]]; then
     # WSL 2 + XMING shennenigans
-    export DISPLAY="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf):0.0"
+    port=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf)
+    export DISPLAY="${port}:0.0"
 elif [ -z "$DISPLAY" ]; then
     export DISPLAY="localhost:0.0"
 fi
