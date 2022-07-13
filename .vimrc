@@ -177,13 +177,14 @@ endfunction
 nnoremap <F2> :call Title_bar()<CR>
 nnoremap <F3> :call Col_bar(nr2char(getchar()))<CR>
 nnoremap <F4> :call Title_destroy()<CR>
+nnoremap <F8> :YcmDiag<CR>
 nnoremap <F9> :call SyntasticToggleError()<CR>
 nnoremap <F10> :SyntasticToggleMode<CR>
 nnoremap <F11> :lclose<CR>
 nnoremap <F12> :set invnumber invpaste<CR> :GitGutterToggle<CR>
 command! -nargs=1 Compare :call Compare(<f-args>)
 command! UnCompare :call UnCompare()
-nnoremap <F8> :UnCompare<CR>
+nnoremap <F7> :UnCompare<CR>
 
 function! Brace_close()
     let newpos = getpos('.')
