@@ -257,8 +257,8 @@ if &term[:5] == "screen"
   set t_fs=\
   set title
 endif
-autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
-autocmd TabEnter,WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
+autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
+autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
 auto VimLeave * let &titleold=getcwd() . "> ready!"
 
 " Add the current file's directory to the path if not already present.
@@ -342,6 +342,9 @@ omap ic <plug>(signify-motion-inner-pending)
 xmap ic <plug>(signify-motion-inner-visual)
 omap ac <plug>(signify-motion-outer-pending)
 xmap ac <plug>(signify-motion-outer-visual)
+
+"ycm
+nnoremap <leader>yf :YcmCompleter FixIt<CR>
 
 "gitgutter
 hi GitGutterAdd ctermfg=green
