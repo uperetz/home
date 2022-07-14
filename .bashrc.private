@@ -13,7 +13,9 @@ function screen_server_pid() {
 }
 
 function screen_client_pts() {
-  for pid in "/proc/$(screen_server_pid)/fd"/*; do
+  server_pid=$(screen_server_pid)
+  [ -z "$server_pid" ] && return
+  for pid in "/proc/${server_pid}/fd"/*; do
     l=$(readlink "$pid")
     if [[ $l =~ "pts" ]]; then
       echo "$l" | cut -d / -f 3-
@@ -23,10 +25,14 @@ function screen_client_pts() {
 }
 
 function screen_client_pid() {
+  pts=$(screen_client_pts)
+  [ -z "$pts" ] && return
   pgrep -t "$(screen_client_pts)" -f "^screen " | awk '{print $1}'
 }
 
 function get_screen_client_env() {
+  pid=$(screen_client_pid)
+  [ -z "$pid" ] && return
   screen_client_env="/proc/$(screen_client_pid)/environ"
   value=$(tr '\0' '\n' <"$screen_client_env" | awk -F= "/^$1=/ {print \$2}")
   eval "export '$1=$value'"
