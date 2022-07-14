@@ -30,3 +30,6 @@ let g:syntastic_cpp_include_dirs += ['/google/src/files/head/depot/google3']
 
 " Turn on YCM for c++
 let g:ycm_show_diagnostics_ui = 1
+
+" Google indentation
+let g:my_personal_global_indent_width = 2
