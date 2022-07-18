@@ -282,7 +282,7 @@ autocmd BufRead *
       \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
       \ exec "set path+=".s:tempPath
 
-"C/++ definitions
+" C/++ definitions
 function! s:insert_gates()
   let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
   execute "normal! i#ifndef " . gatename
@@ -290,7 +290,7 @@ function! s:insert_gates()
   execute "normal! Go#endif /* " . gatename . " */"
   normal! kk
 endfunction
-autocmd BufNewFile *.{h,hpp,cuh} call <SID>insert_gates()
+" autocmd BufNewFile *.{h,hpp,cuh} call <SID>insert_gates()
 
 function! ShowFuncName()
   let strList = ["while", "foreach", "ifelse", "if else", "for", "if", "else", "try", "catch", "case", "switch"]
