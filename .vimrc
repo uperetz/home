@@ -64,7 +64,7 @@ let g:ycm_always_populate_location_list = 1 "default 0
 let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
-let g:ycm_show_diagnostics_ui = 1
+let g:ycm_show_diagnostics_ui = 0
 let g:ycm_clangd_args = ['--clang-tidy']
 
 " ctags
