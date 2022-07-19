@@ -32,3 +32,6 @@ let g:syntastic_python_checkers = ['gpylint']
 
 " Google indentation
 let g:my_personal_global_indent_width = 2
+
+" Extra conf kills ycm-google
+unlet g:ycm_global_ycm_extra_conf
