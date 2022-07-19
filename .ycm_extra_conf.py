@@ -1,3 +1,4 @@
+"""CPP flags to be used with YouCompleteMe Vim plugin."""
 flags = [
     '-Wall',
     '-Wextra',
@@ -10,8 +11,7 @@ flags = [
 ]
 
 
-def Settings(**kwargs):
-    print('here', flags)
-    return {
+def Settings(**_kwargs):
+  return {
       'flags': flags,
-    }
+  }
