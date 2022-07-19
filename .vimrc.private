@@ -24,12 +24,11 @@ Glug syntastic-google
 Glug youcompleteme-google
 Glug blaze plugin[mappings]
 
-" Syntastic includes
+" Syntastic
 let g:syntastic_cpp_compiler_options .= " -DGOOGLE3_SUPPORTED_TOOLCHAIN -DGUNIT_NO_GOOGLE3"
 let g:syntastic_cpp_include_dirs += ['/google/src/files/head/depot/google3']
-
-" Turn on YCM for c++
-let g:ycm_show_diagnostics_ui = 1
+let g:syntastic_bzl_checkers = ['buildifier', 'gpylint']
+let g:syntastic_python_checkers = ['gpylint']
 
 " Google indentation
 let g:my_personal_global_indent_width = 2
