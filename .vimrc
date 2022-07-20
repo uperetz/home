@@ -258,6 +258,7 @@ function! Filename()
         endfor
         let new_path += [expand("%:t")]
         let path = join(new_path, '/')
+        let path = substitute(path, ".*/google3/", "~g3/", "")
         if strlen(path) > 80
             let path = join([new_path[0], '...', new_path[-4], new_path[-3], new_path[-2], new_path[-1]], '/')
         endif

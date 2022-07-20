@@ -70,6 +70,12 @@ set_screen_window() {
     [ "$title_string" = "cd" ] && title_string=$ready && cwd=$HOME
     wdir=${cwd//$HOME/\~}
     # shellcheck disable=SC2059
+    case "$wdir" in
+        */google3/*)
+            wdir=~g3/${wdir##*/google3/}
+        ;;
+    esac
+    # shellcheck disable=SC2059
     printf "$screen_title_format" "$HOSTNAME -- $(shorten_long_paths "$wdir")> $title_string" > "$(tty)"
     unset job
     unset title_string
