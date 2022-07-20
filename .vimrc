@@ -241,8 +241,8 @@ function! Filename()
         return "noname"
     endif
     let is_tracked=system("git ls-files " . expand("%"))
-    if is_tracked == ""
-        let path = expand("%:~")
+    if is_tracked == "" || is_tracked =~ "^fatal: "
+        let path = expand("%:p:~")
         if path[0] == "!"
             return strpart(path, 1)
         endif
@@ -260,7 +260,7 @@ if &term[:5] == "screen"
 endif
 autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
 autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
-auto VimLeave * let &titleold=getcwd() . "> ready!"
+auto VimLeave * let &titleold=fnamemodify(Filename(), ":h") . "> ready!"
 
 " Add the current file's directory to the path if not already present.
 autocmd BufRead *
