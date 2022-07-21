@@ -261,7 +261,7 @@ if &term[:5] == "screen"
 endif
 autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
 autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
-auto VimLeave * let &titleold=fnamemodify(Filename(), ":h") . "> ready!"
+auto VimLeave * let &titleold=getcwd() . "> ready!"
 
 " Add the current file's directory to the path if not already present.
 autocmd BufRead *
