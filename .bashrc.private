@@ -62,6 +62,10 @@ function blazebin() {
   echo "$(figroot)/blaze-bin/$(figtail)"
 }
 
+function blazegen() {
+  echo "$(figroot)/blaze-genfiles/$(figtail)"
+}
+
 function set_workdir() {
   rm -f ~/code/workdir
   ln -s "$PWD" ~/code/workdir
