@@ -328,16 +328,19 @@ hi SpellBad cterm=bold ctermfg=Black ctermbg=LightRed
 "Fold column color
 hi FolColumn ctermbg=Black ctermfg=Black
 
-"More colore stuff
+"More color stuff
 hi cursorcolumn ctermbg=LightRed
 hi comment ctermfg=Blue
 hi SignColumn ctermbg=None
 
 "Make vimdiff normal
-hi DiffAdd    cterm=bold ctermfg=Brown    ctermbg=LightGreen
-hi DiffChange cterm=None ctermfg=None     ctermbg=None
-hi DiffDelete cterm=bold ctermfg=Brown    ctermbg=LightRed
-hi DiffText   cterm=None ctermfg=DarkBlue ctermbg=Green
+hi DiffAdd    cterm=bold ctermfg=LightGreen ctermbg=None
+hi DiffChange cterm=None ctermfg=None       ctermbg=None
+hi DiffDelete cterm=bold ctermfg=LightRed   ctermbg=None
+hi DiffText   cterm=bold ctermfg=Brown      ctermbg=LightYellow
+
+"Make signify playwell with colors, so change popup menu colors
+hi Pmenu ctermbg=DarkGrey ctermfg=LightGrey
 
 set diffopt+=iwhite
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
