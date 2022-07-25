@@ -71,6 +71,15 @@ function set_workdir() {
   ln -s "$PWD" ~/code/workdir
 }
 
-alias cdfig=g4d
+function hgdifff() {
+  hg status --rev "${1:-tip~1}:${2:-tip}"
+}
+
+alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
 alias workdir='cd $(realpath ~/code/workdir)'
+alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
+
+# Cloud variables
+export CEP_CREDENTIALS="/usr/local/google/home/pururia/cep_runner_key.json"
+export PROJECT_ID="pur-uria-testing"
