@@ -13,6 +13,12 @@ Plugin 'ycm-core/YouCompleteMe'
 Plugin 'mhinz/vim-signify'
 Plugin 'csexton/trailertrash.vim'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'tpope/vim-surround'
+Plugin 'adelarsq/vim-matchit'
+Plugin 'itchyny/vim-gitbranch'
+Plugin 'godlygeek/tabular'
+Plugin 'jeetsukumaran/vim-indentwise'
+Plugin 'airblade/vim-gitgutter'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -28,7 +34,6 @@ filetype plugin on
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-execute pathogen#infect()
 "General editor definitions
 let g:my_personal_global_indent_width = 4
 set autoindent
@@ -102,8 +107,6 @@ function! SyntasticToggleError()
     SyntasticCheck
 endfunction
 
-hi cursorcolumn ctermbg=LightRed
-hi comment ctermfg=Blue
 function! Title_destroy()
     if( winnr() == 1 )
         quit
@@ -325,11 +328,16 @@ hi SpellBad cterm=bold ctermfg=Black ctermbg=LightRed
 "Fold column color
 hi FolColumn ctermbg=Black ctermfg=Black
 
+"More colore stuff
+hi cursorcolumn ctermbg=LightRed
+hi comment ctermfg=Blue
+hi SignColumn ctermbg=None
+
 "Make vimdiff normal
-hi DiffAdd    cterm=bold ctermfg=Black    ctermbg=LightGreen
-hi DiffChange cterm=none ctermfg=NONE     ctermbg=None
-hi DiffDelete cterm=bold ctermfg=Red      ctermbg=LightRed
-hi DiffText   cterm=none ctermfg=DarkBlue ctermbg=Green
+hi DiffAdd    cterm=bold ctermfg=Brown    ctermbg=LightGreen
+hi DiffChange cterm=None ctermfg=None     ctermbg=None
+hi DiffDelete cterm=bold ctermfg=Brown    ctermbg=LightRed
+hi DiffText   cterm=None ctermfg=DarkBlue ctermbg=Green
 
 set diffopt+=iwhite
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
