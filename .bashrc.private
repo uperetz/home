@@ -44,6 +44,7 @@ function update_screen() {
   get_screen_client_env SSH_AUTH_SOCK
   get_screen_client_env SSH_CONNECTION
   get_screen_client_env SSH_TTY
+  gcert
 }
 
 update_screen
