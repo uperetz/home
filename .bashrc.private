@@ -78,7 +78,10 @@ function hgdifff() {
 alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
 alias workdir='cd $(realpath ~/code/workdir)'
+
+# Useful binaries
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
+alias prober_maker="/google/bin/releases/cloud-sdn-management-prod/prober_maker/prober_maker"
 
 # Cloud variables
 export CEP_CREDENTIALS="/usr/local/google/home/pururia/cep_runner_key.json"
