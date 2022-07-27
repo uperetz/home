@@ -90,4 +90,5 @@ alias prober_maker="/google/bin/releases/cloud-sdn-management-prod/prober_maker/
 
 # Cloud variables
 export CEP_CREDENTIALS="/usr/local/google/home/pururia/cep_runner_key.json"
+export CEP_CREDENTIALS=/google/data/rw/teams/csdnm-1n-telemetry-probers/keystore_cred.json
 export PROJECT_ID="pur-uria-testing"
