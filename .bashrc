@@ -24,6 +24,26 @@ fi
 
 ready="Ready!"
 
+shorten_long_paths() {
+    result=""
+    for dir in ${1//\// }; do
+        if [ ${#dir} -gt 14 ]; then
+            result="$result/${dir:0:5}..."
+        else
+            result="$result/$dir"
+        fi
+    done
+    if [ ${#result} -gt 80 ]; then
+        read -ra dirs <<< "${result//\// }"
+        result="/${dirs[0]}/.../${dirs[-3]}/${dirs[-2]}/${dirs[-1]}"
+    fi
+    if [ "${1:0:1}" == / ]; then
+        echo "${result}"
+    else
+        echo "${result:1}"
+    fi
+}
+
 # Also saves history!
 set_screen_window() {
     case $BASH_COMMAND in
@@ -48,8 +68,9 @@ set_screen_window() {
         title_string="$ready"
     fi
     [ "$title_string" = "cd" ] && title_string=$ready && cwd=$HOME
+    wdir=${cwd//$HOME/\~}
     # shellcheck disable=SC2059
-    printf "$screen_title_format" "$HOSTNAME -- ${cwd//$HOME/\~}> $title_string" > "$(tty)"
+    printf "$screen_title_format" "$HOSTNAME -- $(shorten_long_paths "$wdir")> $title_string" > "$(tty)"
     unset job
     unset title_string
 }
@@ -65,7 +86,7 @@ for (i=1; i<=NF; ++i)
 if (length($0) > 14) {
     if (NF>4) print $1 "/" $2 "/.../" $(NF-1) "/" $NF;
     else if (NF>3) print $1 "/" $2 "/.../" $NF;
-    else print $1 "/.../" $NF; 
+    else print $1 "/.../" $NF;
 }
 else print $0;}'"'"')'
 PS1='$(eval "echo ${MYPS}")>'
@@ -95,7 +116,7 @@ fhistory() {
     fi
 }
 
-linediff() { 
+linediff() {
     if [ -z "$1" ] || [ -z "$2" ]; then return; fi
     f1=$(basename "$1")
     f2=$(basename "$2")

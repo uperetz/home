@@ -250,6 +250,17 @@ function! Filename()
         if path[0] == "!"
             return strpart(path, 1)
         endif
+        let new_path = []
+        for directory in split(path, "/")
+            if strlen(directory) > 14
+                let directory = directory[0:5] . "..."
+            endif
+            let new_path += [directory]
+        endfor
+        let path = join(new_path, '/')
+        if strlen(path) > 80
+            let path = join([new_path[0], '...', new_path[-4], new_path[-3], new_path[-2], new_path[-1]], '/')
+        endif
         return path
     endif
     let gitroot=fnamemodify(gitbranch#dir(expand("%:p")),":h")
