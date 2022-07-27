@@ -251,12 +251,13 @@ function! Filename()
             return strpart(path, 1)
         endif
         let new_path = []
-        for directory in split(path, "/")
+        for directory in split(expand("%:p:h:~"), "/")
             if strlen(directory) > 14
                 let directory = directory[0:5] . "..."
             endif
             let new_path += [directory]
         endfor
+        let new_path += [expand("%:t")]
         let path = join(new_path, '/')
         if strlen(path) > 80
             let path = join([new_path[0], '...', new_path[-4], new_path[-3], new_path[-2], new_path[-1]], '/')
