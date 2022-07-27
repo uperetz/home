@@ -38,16 +38,20 @@ function get_screen_client_env() {
   eval "export '$1=$value'"
 }
 
-function update_screen() {
+function update_screen_nocert() {
   get_screen_client_env DISPLAY
   get_screen_client_env SSH_CLIENT
   get_screen_client_env SSH_AUTH_SOCK
   get_screen_client_env SSH_CONNECTION
   get_screen_client_env SSH_TTY
+}
+
+function update_screen() {
+  update_screen_nocert
   gcert
 }
 
-update_screen
+update_screen_nocert
 export SHELL=/bin/bash
 
 # fig stuff
