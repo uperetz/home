@@ -89,7 +89,7 @@ if (length($0) > 14) {
     else print $1 "/.../" $NF;
 }
 else print $0;}'"'"')'
-PS1='$(eval "echo ${MYPS}")>'
+PS1='\[\e[1;34m\]$(eval "echo ${MYPS}")>\[\e[0m\]'
 
 #general dirs
 export PYTHONPATH=~/sources
@@ -201,7 +201,7 @@ function putserver {
     rsync -p -r -P -m "${sources[@]}" "$server:$o"
 }
 
-function getserver { 
+function getserver {
     server=$1
     shift
     o=$2;
