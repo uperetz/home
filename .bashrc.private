@@ -86,9 +86,10 @@ alias workdir='cd $(realpath ~/code/workdir)'
 
 # Useful binaries
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
-alias prober_maker="/google/bin/releases/cloud-sdn-management-prod/prober_maker/prober_maker"
+alias prober_maker=/google/bin/releases/cloud-sdn-management-prod/prober_maker/prober_maker
+alias gcloud=/google/data/ro/teams/cloud-sdk/gcloud # The default one is awful
 
 # Cloud variables
-export CEP_CREDENTIALS="/usr/local/google/home/pururia/cep_runner_key.json"
+export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
 export CEP_CREDENTIALS=/google/data/rw/teams/csdnm-1n-telemetry-probers/keystore_cred.json
-export PROJECT_ID="pur-uria-testing"
+export PROJECT_ID=pur-uria-testing
