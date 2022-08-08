@@ -80,6 +80,12 @@ function hgdifff() {
   hg status --rev "${1:-tip~1}:${2:-tip}"
 }
 
+function gcurl {
+  [ -z "$PROJECT_ID" ] && echo "No PROJECT_ID set." && return
+  echo -I- Running curl for "${PROJECT_ID}"
+  curl -H "Authorization: Bearer $(gcloud auth print-access-token --project "$PROJECT_ID")" -H "Content-Type: application/json" "$@"
+}
+
 alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
 alias workdir='cd $(realpath ~/code/workdir)'
@@ -88,8 +94,31 @@ alias workdir='cd $(realpath ~/code/workdir)'
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
 alias prober_maker=/google/bin/releases/cloud-sdn-management-prod/prober_maker/prober_maker
 alias gcloud=/google/data/ro/teams/cloud-sdk/gcloud # The default one is awful
+alias gsql=/google/bin/releases/googlesql-devtools/execute_query/execute_query
+alias pastebin=/google/src/head/depot/eng/tools/pastebin
+alias admin_session=/google/data/ro/projects/tonic/admin_session
+alias tm=/google/data/ro/teams/tenantmanager/tools/tm
+alias pubsub=/google/bin/releases/goops/pubsub/pubsub
 
 # Cloud variables
-export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
+# export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
 export CEP_CREDENTIALS=/google/data/rw/teams/csdnm-1n-telemetry-probers/keystore_cred.json
-export PROJECT_ID=pur-uria-testing
+# export PROJECT_ID=pur-uria-testing
+
+# gcloud completion
+if [ -f /usr/lib/google-cloud-sdk/completion.bash.inc ]; then
+  . /usr/lib/google-cloud-sdk/completion.bash.inc
+  function alias_completion::gcloud() {
+    COMP_WORDS=( "/usr/bin/gcloud" "\${COMP_WORDS[@]:1}" )
+    _python_argcomplete "/usr/bin/gcloud" "$2" "$3"
+  }
+  complete -o default -o nospace -F alias_completion::gcloud gcloud
+fi
+. ~/.bash_completion_kubectl
+
+# Connect to cloudtop display
+function fixdisp() {
+    DISPLAY=$(ls /tmp/.X11-unix)
+    export DISPLAY=:${DISPLAY/X/}
+}
+fixdisp
