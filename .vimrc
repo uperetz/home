@@ -18,6 +18,7 @@ Plugin 'itchyny/vim-gitbranch'
 Plugin 'godlygeek/tabular'
 Plugin 'jeetsukumaran/vim-indentwise'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'ojroques/vim-oscyank', {'branch': 'main'}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -194,6 +195,7 @@ nnoremap <F8> :YcmDiag<CR>
 nnoremap <F9> :call SyntasticToggleError()<CR>
 nnoremap <F10> :SyntasticToggleMode<CR>
 nnoremap <F11> :lclose<CR>
+nnoremap <F6> :set invnumber invpaste<CR> :GitGutterToggle<CR> :call Toggle_signcolumn()<CR>
 nnoremap <F12> :set invnumber invpaste<CR> :GitGutterToggle<CR> :call Toggle_signcolumn()<CR>
 command! -nargs=1 Compare :call Compare(<f-args>)
 command! UnCompare :call UnCompare()
@@ -380,6 +382,9 @@ autocmd FileType python setlocal foldmethod=indent
 "Cuda files
 au BufNewFile,BufRead *.cu set ft=cuda
 au BufNewFile,BufRead *.cuh set ft=cuda
+
+"Yank to local computer from anywhere
+vnoremap <leader>c :OSCYank<CR>
 
 "Generic
 autocmd FileType * normal zR
