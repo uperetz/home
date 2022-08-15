@@ -56,11 +56,12 @@ export SHELL=/bin/bash
 
 # fig stuff
 function figroot() {
-  p4 g4d
+  hg hgd
 }
 
 function figtail() {
-  echo "${PWD#"$(figroot)/"}"
+  cwd=$(realpath "$PWD")
+  echo "${cwd#"$(figroot)/"}"
 }
 
 function blazebin() {
@@ -86,6 +87,17 @@ function gcurl {
   curl -H "Authorization: Bearer $(gcloud auth print-access-token --project "$PROJECT_ID")" -H "Content-Type: application/json" "$@"
 }
 
+function f1-admin {
+  justification="$*"
+  [ -z "$justification" ] && echo "Please provide justification" && return
+  /google/data/ro/projects/tonic/admin_session \
+    --reason="$justification" \
+    --transact \
+    --tonic_policy=f1-user \
+    --user="mdbuser/$USER" \
+    --delegates=mdbuser/f1 -- f1-sql --f1_sql_rpc_authority_source=env
+}
+
 alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
 alias workdir='cd $(realpath ~/code/workdir)'
@@ -99,6 +111,10 @@ alias pastebin=/google/src/head/depot/eng/tools/pastebin
 alias admin_session=/google/data/ro/projects/tonic/admin_session
 alias tm=/google/data/ro/teams/tenantmanager/tools/tm
 alias pubsub=/google/bin/releases/goops/pubsub/pubsub
+alias clean_resources='blaze run //net/fabric/monitoring/cloud_sdn_management/cep_workflows/libs:delete_resources --'
+alias local_guitar='/google/data/ro/projects/testing/integrate/local_guitar.par'
+alias guitar_onseshot='/google/data/ro/projects/testing/integrate/guitra_oneshot.par'
+alias guitar_sandman='/google/data/ro/projects/testing/integrate/guitar_sandman'
 
 # Cloud variables
 # export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
