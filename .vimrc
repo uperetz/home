@@ -19,6 +19,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'jeetsukumaran/vim-indentwise'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ojroques/vim-oscyank', {'branch': 'main'}
+Plugin 'will133/vim-dirdiff'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required

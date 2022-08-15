@@ -8,9 +8,11 @@ vimdiff.premerge = keep
 
 [extensions]
 extdiff =
+color =
 
 [extdiff]
-vimdiff =
+cmd.vdiff = vimdiff
+opts.vdiff = -f '+next' '+execute "DirDiff" fnameescape(argv(0)) fnameescape(argv(1))'
 
 [templatealias]
 google_compact_desc_text = '{GOOG_prefix(GOOG_trim_desc(desc), termwidth-graphwidth)}'
