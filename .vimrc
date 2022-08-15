@@ -243,7 +243,7 @@ vnoremap z] zo]z
 vnoremap z[ zo[z
 
 function! Filename()
-    if @% == ""
+    if expand("%") == ""
         return "noname"
     endif
     let is_tracked=system("git ls-files " . expand("%"))
