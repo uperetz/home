@@ -1,0 +1,2 @@
+SET QueryRequest.truncate_timestamps_to_micros=TRUE;
+SET RequestOptions.requested_enable_feature='ENABLE_SPANNER_PERMISSION_DELEGATION';
