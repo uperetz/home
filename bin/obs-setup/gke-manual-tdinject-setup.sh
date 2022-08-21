@@ -19,7 +19,7 @@ SERVICE_NAME=$4
 NETWORK_NAME=${5:-default}
 NUM_NODES=3
 
-gcloud_cmd='/google/data/ro/teams/cloud-sdk/gcloud'
+. /usr/local/google/home/pururia/sources/gcloud_flows.sh
 ########################################
 # Work in script dir
 cd "$(dirname "$0")"
@@ -44,36 +44,7 @@ wget -q -O - https://storage.googleapis.com/traffic-director/demo/trafficdirecto
   | sed "s/service-test/${SERVICE_NAME}/g" | sed "s/app1/success/g" \
   | kubectl apply -f -
 
-$gcloud_cmd compute backend-services create "$SERVICE_NAME-be" \
- --global \
- --health-checks "$PROJECT_ID-health-check" \
- --load-balancing-scheme INTERNAL_SELF_MANAGED --project "$PROJECT_ID"
-
-$gcloud_cmd compute backend-services add-backend "$SERVICE_NAME-be" \
- --global \
- --network-endpoint-group "$SERVICE_NAME-neg" \
- --network-endpoint-group-zone "$GCP_ZONE" \
- --balancing-mode RATE \
- --max-rate-per-endpoint 5 --project "$PROJECT_ID"
-
-$gcloud_cmd compute url-maps create "$SERVICE_NAME"-url-map --default-service "$SERVICE_NAME-be" --project "$PROJECT_ID"
-
-$gcloud_cmd compute url-maps add-path-matcher "$SERVICE_NAME-url-map" \
-   --default-service "$SERVICE_NAME-be" \
-   --path-matcher-name "$SERVICE_NAME-path-matcher" --project "$PROJECT_ID"
-
-$gcloud_cmd compute url-maps add-host-rule "$SERVICE_NAME-url-map" \
-   --hosts "$SERVICE_NAME" \
-   --path-matcher-name "$SERVICE_NAME-path-matcher" --project "$PROJECT_ID"
-
-$gcloud_cmd compute target-http-proxies create "$SERVICE_NAME-proxy" --url-map "$SERVICE_NAME-url-map" --project "$PROJECT_ID"
-
-$gcloud_cmd compute forwarding-rules create "$SERVICE_NAME-forwarding-rule" \
-  --global \
-  --load-balancing-scheme=INTERNAL_SELF_MANAGED \
-  --address=0.0.0.0 \
-  --target-http-proxy="$SERVICE_NAME-proxy" \
-  --ports 80 --network default --project "$PROJECT_ID"
+gcloud_set_bs "$PROJECT_ID" "$SERVICE_NAME" "$GCP_ZONE"
 ########################################
 
 ########################################
