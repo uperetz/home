@@ -1,5 +1,27 @@
 #!/bin/bash
 
+function setup_machine() {
+  sudo apt update
+  sudo apt install build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm
+  sudo apt install google-sandman
+  sudo apt install kubectl
+  sudo apt install sendgmr
+  sudo apt install clangd
+  sudo apt install connect-prox
+  sudo apt install connect-proxy
+  sudo apt install gcurl
+  sudo apt install gitk
+  sudo apt install google-cloud-sdk
+  sudo apt install google-cloud-sdk-gke-gcloud-auth-plugin
+  sudo apt install kustomize
+  sudo apt install python3-argcomplete
+  sudo apt install python3-pandas
+  sudo apt install rename
+  sudo apt install setup-gke-dev
+  sudo apt install shellcheck
+  sudo apt install xorg
+}
+
 function screen_server_pid() {
   pid=$PPID
   while [ $pid -ne 0 ]; do
@@ -48,7 +70,7 @@ function update_screen_nocert() {
 
 function update_screen() {
   update_screen_nocert
-  gcert
+  gcertstatus || gcert
 }
 
 update_screen_nocert
@@ -77,17 +99,13 @@ function set_workdir() {
   ln -s "$PWD" ~/code/workdir
 }
 
-function hgdifff() {
-  hg status --rev "${1:-tip~1}:${2:-tip}"
-}
-
-function gcurl {
+function gcurl() {
   [ -z "$PROJECT_ID" ] && echo "No PROJECT_ID set." && return
   echo -I- Running curl for "${PROJECT_ID}"
   curl -H "Authorization: Bearer $(gcloud auth print-access-token --project "$PROJECT_ID")" -H "Content-Type: application/json" "$@"
 }
 
-function f1-admin {
+function f1-admin() {
   justification="$*"
   [ -z "$justification" ] && echo "Please provide justification" && return
   /google/data/ro/projects/tonic/admin_session \
@@ -96,6 +114,21 @@ function f1-admin {
     --tonic_policy=f1-user \
     --user="mdbuser/$USER" \
     --delegates=mdbuser/f1 -- f1-sql --f1_sql_rpc_authority_source=env
+}
+
+
+# hg aliases
+
+function hgdifff() {
+  hg status --rev "${1:-.~1}:${2:-.}"
+}
+
+function hgmsg() {
+  hg log -v -r .
+}
+
+function hgdiff() {
+  hg diff --from "${1:-.~1}"
 }
 
 alias cdfig=hgd
@@ -133,6 +166,7 @@ fi
 . ~/.bash_completion_kubectl
 
 # Connect to cloudtop display
+alias disp='echo $DISPLAY'
 function fixdisp() {
     DISPLAY=$(ls /tmp/.X11-unix)
     export DISPLAY=:${DISPLAY/X/}
