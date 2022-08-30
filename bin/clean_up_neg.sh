@@ -15,10 +15,11 @@ if [ -z "$zone" ] || [ -z "$suffix" ] || { [ -n "$noconfirm" ] && [ "$noconfirm"
 fi
 
 check_confirm_and_execute () {
+  # Eval to expand multiple resources
   if [ "$noconfirm" == delete ]; then
-    echo y | "$@"
+    echo y | eval "$*"
   else
-    "$@"
+    eval "$*"
   fi
 }
 
@@ -26,9 +27,13 @@ list_resources () {
   resource=$1
   resource_type=${2:-compute}
   [ -z "$resource" ] && return
-  mapfile -t resources <<<"$(gcloud "$resource_type" "$resource" list \
-    --filter "$zone name~'[a-zA-Z0-9-]*-${suffix}'" \
-    --format "value(name)")"
+
+  # Expand
+  list_cmd="gcloud $resource_type $resource list \
+    --filter '$zone name~[a-zA-Z0-9-]*-${suffix}' \
+    --format 'value(name)'"
+  mapfile -t resources <<<"$(eval "$list_cmd")"
+
   if [ ${#resources[@]} = 0 ] || [ -z "${resources[0]}" ]; then
     >&2 echo "No $resource found"
   else
@@ -40,18 +45,18 @@ list_and_delete_resource () {
   resource=$1
   local zone
   zone=$2
+  [ "$zone" = nozone ] && nozone=1 && zone=
   [ -z "$resource" ] && return
   [ -n "$zone" ] && zone="zone=$zone"
-  mapfile -t resources <<<"$(gcloud compute "$resource" list \
-    --filter "$zone name~'[a-zA-Z0-9-]*-${suffix}'" \
-    --format "value(name)")"
 
   mapfile -t resources <<<"$(list_resources "$resource")"
   [ -z "${resources[0]}" ] && return
 
   [ -n "$zone" ] && zone="--$zone" || zone=--global
+  [ -n "$nozone" ] && zone=
   check_confirm_and_execute \
-    gcloud compute "$resource" delete "${resources[@]}" "$zone"
+    gcloud compute "$resource" delete "${resources[*]}" "$zone"
+
 }
 
 list_and_delete_resource forwarding-rules |& grep -v WARNING
@@ -59,6 +64,8 @@ list_and_delete_resource target-http-proxies |& grep -v WARNING
 list_and_delete_resource url-maps |& grep -v WARNING
 list_and_delete_resource backend-services |& grep -v WARNING
 list_and_delete_resource network-endpoint-groups "${zone}" |& grep -v WARNING
+list_and_delete_resource "instance-groups managed" "${zone}" |& grep -v WARNING
+list_and_delete_resource instance-templates nozone |& grep -v WARNING
 
 if [  "$cluster" = true ]; then
   mapfile -t clusters <<<"$(list_resources clusters container)"

@@ -31,8 +31,8 @@ cd "$(dirname "$0")"
 ########################################
 
 ########################################
-# Create network and firewall rules
-gcloud_cmd compute networks create "$NETWORK_NAME" --subnet-mode=custom
+# Create network and healthcheck
+$gcloud_cmd compute networks create "$NETWORK_NAME" --subnet-mode=custom
 $gcloud_cmd compute networks subnets create "$SUBNET_NAME" \
   --network "$NETWORK_NAME" \
   --range "10.10.10.0/24" \
@@ -41,6 +41,10 @@ $gcloud_cmd compute networks subnets create "$SUBNET_NAME" \
 $gcloud_cmd compute firewall-rules create "fw-$SUFFIX" \
   --network "$NETWORK_NAME" \
   --allow=tcp:22,tcp:80,icmp
+
+$gcloud_cmd compute health-checks create http "hc-$SUFFIX" \
+  --global \
+  --use-serving-port
 ########################################
 
 ########################################
@@ -129,10 +133,6 @@ $gcloud_cmd compute instance-groups managed create "$CLIENT_NAME" \
 # default from codelabs. It may hurt.
 # After the service is created connect it to an end point, and setup the
 # forwarding rule.
-
-$gcloud_cmd compute health-checks create http "hc-$SUFFIX" \
-  --global \
-  --use-serving-port
 
 $gcloud_cmd compute backend-services create "$SERVICE_NAME" \
  --global \
