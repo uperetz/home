@@ -74,10 +74,6 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_clangd_args = ['--clang-tidy']
 
-" ctags
-set tags+=./tags;~,tags,~/.vim/tags/**/tags
-set fdm=syntax
-
 " Capture c++ qualifiers (for ctags)
 vnoremap ak <ESC>?^\<bar>[^a-zA-Z0-9:_]<CR>lv/[^a-zA-Z0-9:_]\<bar>$<CR>h
 vnoremap af <ESC>?^\<bar>[^a-zA-Z0-9:_.]<CR>lv/[^a-zA-Z0-9:_.]\<bar>$<CR>h
@@ -244,7 +240,7 @@ vnoremap z[ zo[z
 
 function! Filename()
     if expand("%") == ""
-        return "noname"
+        return &titlestring
     endif
     let is_tracked=system("git ls-files " . expand("%"))
     if is_tracked == "" || is_tracked =~ "^fatal: "
@@ -277,8 +273,8 @@ if &term[:5] == "screen"
   set t_fs=\
   set title
 endif
-autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
-autocmd WinEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
+autocmd WinEnter,BufEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
+autocmd WinEnter,BufEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
 auto VimLeave * let &titleold=substitute(getcwd(), ".*/google3/", "~g3/", "") . "> ready!"
 
 " Add the current file's directory to the path if not already present.
