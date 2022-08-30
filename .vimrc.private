@@ -37,5 +37,13 @@ let g:my_personal_global_indent_width = 2
 " Extra conf kills ycm-google
 unlet g:ycm_global_ycm_extra_conf
 
+" Dir diff mappings
+let g:DirDiffEnableMappings = 1
+
 " Workaround for no ssh-X-forwarding in Google
 command -range GPaste : !sed -n <line1>,<line2>p %:p | /google/src/head/depot/eng/tools/pastebin
+
+nmap <leader>cb :!build_cleaner %:t<CR>
+nmap <leader>yr :YcmRestartServer<CR>
+
+set complete-=i

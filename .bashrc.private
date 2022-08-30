@@ -4,6 +4,7 @@ function setup_machine() {
   sudo apt update
   sudo apt install build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm
   sudo apt install google-sandman
+  sudo apt install google-guitar
   sudo apt install kubectl
   sudo apt install sendgmr
   sudo apt install clangd
@@ -113,7 +114,8 @@ function f1-admin() {
     --transact \
     --tonic_policy=f1-user \
     --user="mdbuser/$USER" \
-    --delegates=mdbuser/f1 -- f1-sql --f1_sql_rpc_authority_source=env
+    --delegates=mdbuser/f1 \
+    -- f1-sql --f1_sql_rpc_authority_source=env --f1_sql_reason="$justification"
 }
 
 

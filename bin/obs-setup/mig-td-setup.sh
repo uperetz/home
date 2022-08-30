@@ -69,14 +69,14 @@ $gcloud_cmd compute instance-groups managed wait-until --stable "$MIG_NAME" \
 # Create client and service
 td_endpoint="trafficdirector.googleapis"
 # td_endpoint="staging-trafficdirector.sandbox.googleapis"
-gcloud compute instance-templates create "client-it-$SUFFIX" \
+$gcloud_cmd compute instance-templates create "client-it-$SUFFIX" \
+  --scopes=https://www.googleapis.com/auth/cloud-platform \
   --region="$GCP_REGION" \
   --network="$NETWORK_NAME" \
   --subnet="$SUBNET_NAME" \
   --image-family=debian-10 \
   --image-project=debian-cloud \
   --machine-type=e2-micro \
-  --no-address \
   --metadata=block-project-ssh-keys=TRUE,startup-script="#!/bin/bash
 # Add a system user to run Envoy binaries. Login is disabled for this user
 sudo adduser --system --disabled-login envoy
@@ -97,7 +97,7 @@ EXCLUDE_ENVOY_USER_FROM_INTERCEPT='true'
 # Intercept all traffic by default
 SERVICE_CIDR='*'
 GCP_PROJECT_NUMBER=$PROJECT_NUMBER
-VPC_NETWORK_NAME='NETWORK_NAME'
+VPC_NETWORK_NAME=$NETWORK_NAME
 ENVOY_IMAGE='envoyproxy/envoy:v1.21.0'
 ENVOY_PORT='15001'
 ENVOY_ADMIN_PORT='15000'
@@ -130,7 +130,7 @@ $gcloud_cmd compute instance-groups managed create "$CLIENT_NAME" \
 # After the service is created connect it to an end point, and setup the
 # forwarding rule.
 
-gcloud compute health-checks create http "hc-$SUFFIX" \
+$gcloud_cmd compute health-checks create http "hc-$SUFFIX" \
   --global \
   --use-serving-port
 

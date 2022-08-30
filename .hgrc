@@ -12,7 +12,7 @@ color =
 
 [extdiff]
 cmd.vdiff = vimdiff
-opts.vdiff = -f '+next' '+execute "DirDiff" fnameescape(argv(0)) fnameescape(argv(1))'
+opts.dirdiff = -f '+next' '+execute "DirDiff" fnameescape(argv(0)) fnameescape(argv(1))' '+wincmd l' '+q' '+let g:ycm_show_diagnostics_ui=0' '+SyntasticToggleMode'
 
 [templatealias]
 google_compact_desc_text = '{GOOG_prefix(GOOG_trim_desc(desc), termwidth-graphwidth)}'
