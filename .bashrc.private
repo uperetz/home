@@ -18,15 +18,14 @@ function setup_machine() {
   sudo apt install google-sandman
   sudo apt install google-guitar
   sudo apt install kubectl
+  sudo glinux-add-repo sendgmr
+  sudo apt-get update
   sudo apt install sendgmr
   sudo apt install clangd
-  sudo apt install connect-prox
   sudo apt install connect-proxy
-  sudo apt install gcurl
   sudo apt install gitk
   sudo apt install google-cloud-sdk
   sudo apt install google-cloud-sdk-gke-gcloud-auth-plugin
-  sudo apt install kustomize
   sudo apt install python3-argcomplete
   sudo apt install python3-pandas
   sudo apt install rename
