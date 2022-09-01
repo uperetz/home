@@ -179,3 +179,7 @@ fi
 . ~/.bash_completion_kubectl
 
 
+# Need this for some reason on gLinux Desktop
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+      . /etc/bash_completion
+fi
