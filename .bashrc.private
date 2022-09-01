@@ -1,5 +1,17 @@
 #!/bin/bash
 
+declare -A servers
+servers[pururia]='pururia.c.googlers.com'
+servers[purtest]='purtest.c.googlers.com'
+
+for server in "${!servers[@]}"; do
+    # shellcheck disable=SC2139
+    # We want this to expand
+    alias "$server=ssh -X ${servers[$server]}"
+    eval function "put${server} { putserver \"${servers[$server]}\" \"\$@\"; }"
+    eval function "get${server} { getserver \"${servers[$server]}\" \"\$@\"; }"
+done
+
 function setup_machine() {
   sudo apt update
   sudo apt install build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm
@@ -167,10 +179,4 @@ if [ -f /usr/lib/google-cloud-sdk/completion.bash.inc ]; then
 fi
 . ~/.bash_completion_kubectl
 
-# Connect to cloudtop display
-alias disp='echo $DISPLAY'
-function fixdisp() {
-    DISPLAY=$(ls /tmp/.X11-unix)
-    export DISPLAY=:${DISPLAY/X/}
-}
-fixdisp
+
