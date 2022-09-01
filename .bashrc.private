@@ -108,8 +108,8 @@ function blazegen() {
 }
 
 function set_workdir() {
-  rm -f ~/code/workdir
-  ln -s "$PWD" ~/code/workdir
+  rm -f ~/workdir
+  ln -s "$PWD" ~/workdir
 }
 
 function gcurl() {
@@ -147,7 +147,7 @@ function hgdiff() {
 
 alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
-alias workdir='cd $(realpath ~/code/workdir)'
+alias workdir='cd $(realpath ~/workdir)'
 
 # Useful binaries
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
