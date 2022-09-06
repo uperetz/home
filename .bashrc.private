@@ -7,7 +7,7 @@ servers[purtest]='purtest.c.googlers.com'
 for server in "${!servers[@]}"; do
     # shellcheck disable=SC2139
     # We want this to expand
-    alias "$server=ssh -X ${servers[$server]}"
+    alias "$server=ssh -Y ${servers[$server]}"
     eval function "put${server} { putserver \"${servers[$server]}\" \"\$@\"; }"
     eval function "get${server} { getserver \"${servers[$server]}\" \"\$@\"; }"
 done
