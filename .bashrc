@@ -215,6 +215,13 @@ function getserver {
     rsync -p -r -P -m "$server:$1" "$o"
 }
 
+function listdisp {
+  netstat -lnt | awk '
+    sub(/.*:/,"",$4) && $4 >= 6000 && $4 < 6100 {
+      print ($1 == "tcp6" ? "ip6-localhost:" : "localhost:") ($4 - 6000)
+    }'
+}
+
 #Git completion
 if [ -f /etc/bash_completion.d/git ]; then
     # shellcheck disable=SC1091
