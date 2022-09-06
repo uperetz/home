@@ -7,6 +7,8 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
+" Install Vundle with:
+" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'mhinz/vim-signify'
@@ -401,5 +403,8 @@ autocmd FileType java execute "if filereadable('".g:syntastic_java_javac_config_
 if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private
   endif
+
+"Remove autoselect in case something added it
+set clipboard-=autoselect
 
 filetype plugin indent on
