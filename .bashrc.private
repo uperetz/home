@@ -83,7 +83,6 @@ function update_screen() {
   gcertstatus || gcert
 }
 
-update_screen
 export SHELL=/bin/bash
 
 # fig stuff
