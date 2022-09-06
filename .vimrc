@@ -401,4 +401,7 @@ if filereadable($HOME . "/.vimrc.private")
     source ~/.vimrc.private
   endif
 
+"Remove autoselect in case something added it
+set clipboard-=autoselect
+
 filetype plugin indent on
