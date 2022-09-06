@@ -151,7 +151,6 @@ alias workdir='cd $(realpath ~/workdir)'
 # Useful binaries
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
 alias prober_maker=/google/bin/releases/cloud-sdn-management-prod/prober_maker/prober_maker
-alias gcloud=/google/data/ro/teams/cloud-sdk/gcloud # The default one is awful
 alias gsql=/google/bin/releases/googlesql-devtools/execute_query/execute_query
 alias pastebin=/google/src/head/depot/eng/tools/pastebin
 alias admin_session=/google/data/ro/projects/tonic/admin_session
@@ -183,3 +182,9 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
       . /etc/bash_completion
 fi
+
+# Weird bug on glinux happens sometimes, use this:
+# pkill -9 ssh-agent ; eval "$(ssh-agent -s)" ; sleep 1s
+gcertstatus || gcert
+
+export PATH=$PATH:/usr/games
