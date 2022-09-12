@@ -6,7 +6,7 @@ defshell -bash
 shelltitle ">|bash"
 altscreen on
 deflogin off
-bindkey -m > eval "stuff ' '" writebuf "exec sh -c 'export DISPLAY=localhost:21.0; xsel < /tmp/screen-exchange'"
+bindkey -m > eval "stuff ' '" writebuf "exec sh -c 'export DISPLAY=localhost:10.0; xsel < /tmp/screen-exchange'"
 bind j focus down
 bind k focus up
 bind l focus right

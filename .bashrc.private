@@ -121,14 +121,33 @@ function gcurl() {
 
 function f1-admin() {
   justification="$*"
-  [ -z "$justification" ] && echo "Please provide justification" && return
+  reason="manual_reason: 'bg: $justification'"
+  if [ $# -gt 1 ]; then
+    if [ "$1" != -span ] || [ $# -gt 2 ]; then
+      echo "Usage: f1-admin [-span] 'justification string'"
+      return 1
+    else
+      echo "Spanner mode"
+      shift
+      justification="$*"
+      reason="$justification"
+    fi
+  fi
+  echo "Reason: $reason"
+  echo
+
+  [ -z "$justification" ] && \
+    echo "Usage: f1-admin [-span] 'justification string'" && \
+    return 1
   /google/data/ro/projects/tonic/admin_session \
-    --reason="$justification" \
+    --reason="$reason" \
     --transact \
     --tonic_policy=f1-user \
     --user="mdbuser/$USER" \
     --delegates=mdbuser/f1 \
-    -- f1-sql --f1_sql_rpc_authority_source=env --f1_sql_reason="$justification"
+    -- f1-sql \
+         --f1_sql_rpc_authority_source=env \
+         --f1_sql_reason="manual_reason: 'bg: $justification'"
 }
 
 # hg aliases

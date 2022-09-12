@@ -8,7 +8,7 @@
 ########################################
 
 if [[ -z "$1" ]] || [[ "$1" =~ ^-h ]] || [[ $# -lt 3 ]]; then
-    echo "-I- Usage: gke-manual-tdinject-setup.sh <project_id> <zone> <suffix>"
+    echo "-I- Usage: mig-td-setup.sh <project_id> <zone> <suffix>"
     exit
 fi
 
@@ -129,10 +129,6 @@ $gcloud_cmd compute instance-groups managed create "$CLIENT_NAME" \
 
 ########################################
 # Create service
-# WARNING: Ensure the service NEG is unique. In particular, don't leave the
-# default from codelabs. It may hurt.
-# After the service is created connect it to an end point, and setup the
-# forwarding rule.
 
 $gcloud_cmd compute backend-services create "$SERVICE_NAME" \
  --global \
