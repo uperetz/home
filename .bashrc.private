@@ -104,18 +104,27 @@ function blazebin() {
   echo "$(figroot)/blaze-bin/$(figtail)"
 }
 
+function blazeout() {
+  echo "$(figroot)/blaze-out/$(figtail)"
+}
+
 function blazegen() {
   echo "$(figroot)/blaze-genfiles/$(figtail)"
 }
 
 function set_workdir() {
-  rm -f ~/workdir
-  ln -s "$PWD" ~/workdir
+  rm -f ~/code/workdir
+  ln -s "$PWD" ~/code/workdir
 }
 
 function gcurl() {
-  [ -z "$PROJECT_ID" ] && echo "No PROJECT_ID set." && return
-  echo -I- Running curl for "${PROJECT_ID}"
+  project=$1
+  shift
+  if ! gcloud projects describe "$project" 2> /dev/null; then
+    echo "Failed to find project $project"
+    return 1
+  fi
+  echo "Sending curl command: $*"
   curl -H "Authorization: Bearer $(gcloud auth print-access-token --project "$PROJECT_ID")" -H "Content-Type: application/json" "$@"
 }
 
@@ -153,7 +162,10 @@ function f1-admin() {
 # hg aliases
 
 function hgdifff() {
-  hg status --rev "${1:-.~1}:${2:-.}"
+  from=${1:-.~1}
+  to=${2:-.}
+  shift 2
+  hg status --rev "$from:$to" "$@"
 }
 
 function hgmsg() {
@@ -161,7 +173,9 @@ function hgmsg() {
 }
 
 function hgdiff() {
-  hg diff --from "${1:-.~1}"
+  from=${1:-.~1}
+  shift
+  hg diff --from "$from" "$@"
 }
 
 # Sandman and bcid
@@ -171,20 +185,20 @@ function bcid_run() {
   REVIEWER=$2
   shift 2
   # Run with bcid
-  ~/google3/monitoring/cloud_latency/scripts/cl_bcid_run --pass_resolved_version=true \
+  ~/code/google3/monitoring/cloud_latency/scripts/cl_bcid_run --pass_resolved_version=true \
   --  "$CL" "$REVIEWER" \
   "$@"
 }
 
 export SANDBOX=//production/borg/traffic-team/templates/cloud_latency/sandbox/one_network_sandbox.gcl
 function one_network_sandman() {
-  cd ~/g3-citc || return
+  cd ~/code/g3-citc || return
   sandman $SANDBOX TearDown Build Setup Start "$@"
   cd - || return
 }
 
 function one_network_sandman_update() {
-  cd ~/g3-citc || return
+  cd ~/code/g3-citc || return
   sandman $SANDBOX build
   sandman_startpcl $SANDBOX --startpcl_command push
   cd - || return
@@ -198,7 +212,7 @@ function one_network_sandman_prod {
 
 alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
-alias workdir='cd $(realpath ~/workdir)'
+alias workdir='cd $(realpath ~/code/workdir)'
 
 # Useful binaries
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
