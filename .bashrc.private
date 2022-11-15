@@ -174,8 +174,9 @@ function hgmsg() {
 
 function hgdiff() {
   from=${1:-.~1}
-  shift
-  hg diff --from "$from" "$@"
+  to=${2:-.}
+  shift 2
+  hg diff --from "$from" --to "$to" "$@"
 }
 
 # Sandman and bcid
@@ -231,6 +232,7 @@ alias guitar_sandman='/google/data/ro/projects/testing/integrate/guitar_sandman'
 # export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
 export CEP_CREDENTIALS=/google/data/rw/teams/csdnm-1n-telemetry-probers/keystore_cred.json
 # export PROJECT_ID=pur-uria-testing
+#  export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # gcloud completion
 if [ -f /usr/lib/google-cloud-sdk/completion.bash.inc ]; then

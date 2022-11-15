@@ -29,6 +29,7 @@ let g:syntastic_cpp_compiler_options .= " -DGOOGLE3_SUPPORTED_TOOLCHAIN -DGUNIT_
 let g:syntastic_cpp_include_dirs += ['/google/src/files/head/depot/google3']
 let g:syntastic_bzl_checkers = ['buildifier', 'gpylint']
 let g:syntastic_python_checkers = ['gpylint']
+let g:syntastic_piccolo_checkers = ['gpylint']
 let g:syntastic_proto_checkers = ['glint']
 
 " Google indentation
