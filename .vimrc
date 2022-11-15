@@ -242,7 +242,7 @@ vnoremap z[ zo[z
 
 function! Filename()
     if expand("%") == ""
-        return &titlestring
+        return split(&titlestring, "-- vim ")[-1]
     endif
     let is_tracked=system("git ls-files " . expand("%"))
     if is_tracked == "" || is_tracked =~ "^fatal: "
