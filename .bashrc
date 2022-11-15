@@ -115,10 +115,10 @@ fhistory() {
         amount=$2
         [ -n "$context" ] && amount=$(( ($3*2+1) * amount))
         # shellcheck disable=SC2086
-        grep $context -- "$1" ~/.master_history | tail -n "$amount"
+        grep --color $context -- "$1" ~/.master_history | uniq | tail -n "$amount"
     else
         # shellcheck disable=SC2086
-        grep $context -- "$1" ~/.master_history
+        grep --color $context -- "$1" ~/.master_history | uniq
     fi
 }
 
