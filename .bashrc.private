@@ -227,6 +227,7 @@ alias clean_resources='blaze run //net/fabric/monitoring/cloud_sdn_management/ce
 alias local_guitar='/google/data/ro/projects/testing/integrate/local_guitar.par'
 alias guitar_onseshot='/google/data/ro/projects/testing/integrate/guitra_oneshot.par'
 alias guitar_sandman='/google/data/ro/projects/testing/integrate/guitar_sandman'
+alias g3python='/google/bin/users/joshuamorton/g3python/g3python.par'
 
 # Cloud variables
 # export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
