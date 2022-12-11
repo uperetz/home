@@ -242,7 +242,11 @@ vnoremap z[ zo[z
 
 function! Filename()
     if expand("%") == ""
-        return split(&titlestring, "-- vim ")[-1]
+        let split_title = split(&titlestring, "-- vim ")
+        if len(split_title) == 0
+            return ""
+        endif
+        return split_title[-1]
     endif
     let is_tracked=system("git ls-files " . expand("%"))
     if is_tracked == "" || is_tracked =~ "^fatal: "
@@ -275,8 +279,8 @@ if &term[:5] == "screen"
   set t_fs=\
   set title
 endif
-autocmd WinEnter,BufEnter,BufReadPost,FileReadPost,BufNewFile * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
-autocmd WinEnter,BufEnter,BufReadPost,FileReadPost,BufNewFile * let &titlestring = hostname() . ' -- vim ' . Filename()
+autocmd WinEnter,BufEnter,BufReadPost,FileReadPost,BufNewFile,BufWrite * silent execute '!printf "\033]0;'.hostname().' -- vim '.Filename().'\007"'
+autocmd WinEnter,BufEnter,BufReadPost,FileReadPost,BufNewFile,BufWrite * let &titlestring = hostname() . ' -- vim ' . Filename()
 auto VimLeave * let &titleold=substitute(getcwd(), ".*/google3/", "~g3/", "") . "> ready!"
 
 " Add the current file's directory to the path if not already present.

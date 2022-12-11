@@ -144,7 +144,6 @@ alias ps2pdfall='for x in *.ps; do ps2pdf $x; rm $x; done'
 alias py="python3"
 alias rp="realpath"
 alias vi="vim"
-alias imagej="setsid imagej &> /dev/null"
 alias gk="gitk --all &"
 alias glog="git log --all --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%ci) <%an>' --branches"
 alias glogc="git log --graph --pretty=format:'%C(auto) %h %d  %s %C(auto,yellow)(%ci) <%an>'"
