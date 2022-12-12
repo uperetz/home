@@ -257,4 +257,3 @@ fi
 gcertstatus || gcert
 
 export PATH=$PATH:/usr/games
-xinput disable 10
