@@ -375,6 +375,8 @@ xmap ac <plug>(signify-motion-outer-visual)
 
 "ycm
 nnoremap <leader>yf :YcmCompleter FixIt<CR>
+nnoremap <leader>yd :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>yD :YcmCompleter GoToDefinition<CR>
 
 "gitgutter
 hi GitGutterAdd ctermfg=green
