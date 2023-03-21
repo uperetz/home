@@ -230,6 +230,37 @@ elif [ -f ~/.git_completion.bash ]; then
     . ~/.git_completion.bash
 fi
 
+# Utility
+function sed-multiline {
+  sed_args=
+  infile=${*: -1}
+  replacement=${*: -2:1}
+
+  while [ "${1:0:1}" = "-" ]; do
+    sed_args+=" $1"
+    shift
+  done
+
+  sed_string="sed$sed_args '\#^$1#"
+
+  close_braces=""
+  i=2
+  if [ "$i" -gt $(($#-2)) ]; then
+    echo "Usage: sed [-sed_flags ...] 'line 1' ['line 2'...] replacement file"
+    return
+  fi
+  while [ "$i" -le $(($#-2)) ]; do
+    sed_string+=" {N; \#\n${!i}#"
+    close_braces+="}"
+    ((i++))
+  done
+
+  sed_string+=" {s#.*#$replacement#g}$close_braces' $infile"
+
+  echo "RUNNING: $sed_string"
+  eval "$sed_string"
+}
+
 if [ -f "${HOME}/.bashrc.private" ]; then
     # shellcheck disable=SC1091
     . "${HOME}/.bashrc.private"

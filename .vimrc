@@ -20,6 +20,9 @@ Plugin 'itchyny/vim-gitbranch'
 Plugin 'godlygeek/tabular'
 Plugin 'jeetsukumaran/vim-indentwise'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'Konfekt/FastFold'
+
+" Google only
 Plugin 'ojroques/vim-oscyank', {'branch': 'main'}
 Plugin 'will133/vim-dirdiff'
 Plugin 'prabirshrestha/vim-lsp'
@@ -58,6 +61,7 @@ set backup
 set backupdir=$HOME/.vim/backup
 call mkdir(&backupdir, 'p')
 set dir=$HOME/.vim/backup
+set ruler
 set mouse=
 
 " Persistent undo
@@ -383,6 +387,8 @@ nnoremap <leader>yD :YcmCompleter GoToDefinition<CR>
 
 "gitgutter
 hi GitGutterAdd ctermfg=green
+
+setlocal foldmethod=syntax
 
 "Python files
 autocmd FileType python setlocal foldmethod=indent
