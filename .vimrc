@@ -21,7 +21,7 @@ Plugin 'itchyny/vim-gitbranch'
 Plugin 'godlygeek/tabular'
 Plugin 'jeetsukumaran/vim-indentwise'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'ojroques/vim-oscyank', {'branch': 'main'}
+Plugin 'Konfekt/FastFold'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -55,6 +55,7 @@ set backup
 set backupdir=$HOME/.vim/backup
 call mkdir(&backupdir, 'p')
 set dir=$HOME/.vim/backup
+set ruler
 set mouse=
 
 " Persistent undo
@@ -377,6 +378,8 @@ nnoremap <leader>yf :YcmCompleter FixIt<CR>
 
 "gitgutter
 hi GitGutterAdd ctermfg=green
+
+setlocal foldmethod=syntax
 
 "Python files
 autocmd FileType python setlocal foldmethod=indent
