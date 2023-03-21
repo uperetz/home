@@ -31,6 +31,36 @@ let g:syntastic_bzl_checkers = ['buildifier', 'gpylint']
 let g:syntastic_python_checkers = ['gpylint']
 let g:syntastic_piccolo_checkers = ['gpylint']
 let g:syntastic_proto_checkers = ['glint']
+let g:syntastic_java_checkers = []
+
+" Java crap
+let g:ycm_language_server =
+  \ [
+  \   {
+  \     'name': 'ciderlsp',
+  \     'cmdline': [ '/google/bin/releases/cider/ciderlsp/ciderlsp',
+  \                  '--tooltag=vim-lsp',
+  \                  '--noforward_sync_responses',
+  \                  '-merge_diagnostic_layers=true'],
+  \     'filetypes': [ 'java', 'kotlin' ]
+  \   },
+  \ ]
+
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'CiderLSP',
+    \ 'cmd': {server_info->[
+    \   '/google/bin/releases/cider/ciderlsp/ciderlsp',
+    \   '--tooltag=vim-lsp',
+    \   '--noforward_sync_responses',
+    \   '-merge_diagnostic_layers=true',
+    \ ]},
+    \ 'allowlist': [
+    \   'java',
+    \ ],
+    \})
+
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 1
 
 " Google indentation
 let g:my_personal_global_indent_width = 2

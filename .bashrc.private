@@ -214,6 +214,7 @@ function one_network_sandman_prod {
 alias cdfig=hgd
 alias cdbbin='cd $(blazebin)'
 alias workdir='cd $(realpath ~/code/workdir)'
+alias submit='hg submit &> ~/submit.log &'
 
 # Useful binaries
 alias workflow_cli=/google/bin/releases/cep-monitoring/public/workflow_cli
@@ -228,6 +229,8 @@ alias local_guitar='/google/data/ro/projects/testing/integrate/local_guitar.par'
 alias guitar_onseshot='/google/data/ro/projects/testing/integrate/guitra_oneshot.par'
 alias guitar_sandman='/google/data/ro/projects/testing/integrate/guitar_sandman'
 alias g3python='/google/bin/users/joshuamorton/g3python/g3python.par'
+alias cloud_traceroute="/google/data/ro/teams/network-detective/cloud_traceroute"
+alias gcloud='/google/data/ro/teams/cloud-sdk/gcloud'
 
 # Cloud variables
 # export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
@@ -254,6 +257,6 @@ fi
 
 # Weird bug on glinux happens sometimes, use this:
 # pkill -9 ssh-agent ; eval "$(ssh-agent -s)" ; sleep 1s
-gcertstatus || gcert
+update_screen
 
 export PATH=$PATH:/usr/games

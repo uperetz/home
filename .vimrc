@@ -22,6 +22,9 @@ Plugin 'jeetsukumaran/vim-indentwise'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ojroques/vim-oscyank', {'branch': 'main'}
 Plugin 'will133/vim-dirdiff'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
