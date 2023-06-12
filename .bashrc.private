@@ -261,8 +261,4 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
       . /etc/bash_completion
 fi
 
-# Weird bug on glinux happens sometimes, use this:
-# pkill -9 ssh-agent ; eval "$(ssh-agent -s)" ; sleep 1s
-update_screen
-
 export PATH=$PATH:/usr/games
