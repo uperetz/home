@@ -7,3 +7,5 @@
 [user]
 	name = Uria Pur
 	email = peretz.uria@gmail.com
+[pull]
+	ff = only
