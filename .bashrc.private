@@ -3,6 +3,7 @@
 declare -A servers
 servers[pururia]='pururia.c.googlers.com'
 servers[purtest]='purtest.c.googlers.com'
+servers[purbig]='purbig.c.googlers.com'
 
 for server in "${!servers[@]}"; do
     # shellcheck disable=SC2139
@@ -260,5 +261,7 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
       . /etc/bash_completion
 fi
+
+gcertstatus || gcert
 
 export PATH=$PATH:/usr/games
