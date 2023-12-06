@@ -23,6 +23,8 @@ Glug g4
 Glug syntastic-google
 Glug youcompleteme-google
 Glug blaze plugin[mappings]
+Glug imp-google
+Glaive imp Suggest[default]=buffer,csearch,prompt
 
 " Syntastic
 let g:syntastic_cpp_compiler_options .= " -DGOOGLE3_SUPPORTED_TOOLCHAIN -DGUNIT_NO_GOOGLE3"
