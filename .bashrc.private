@@ -288,7 +288,9 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
       . /etc/bash_completion
 fi
 
-gcertstatus || gcert
+# Weird bug on glinux happens sometimes, use this:
+# pkill -9 ssh-agent ; eval "$(ssh-agent -s)" ; sleep 1s
+update_screen
 
 export NETSLO_JOBS=(dynamic-reachability topology-reader static-resource-publisher local-reflector global-reflector flow-selector) # passive-collector joiner cloud-monarch-scraper
 export PATH=$PATH:/usr/games
