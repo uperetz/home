@@ -28,6 +28,7 @@ Plugin 'will133/vim-dirdiff'
 Plugin 'prabirshrestha/vim-lsp'
 Plugin 'prabirshrestha/asyncomplete.vim'
 Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'flwyd/vim-imp'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -63,6 +64,7 @@ call mkdir(&backupdir, 'p')
 set dir=$HOME/.vim/backup
 set ruler
 set mouse=
+set textwidth=80
 
 " Persistent undo
 set undofile
@@ -366,6 +368,8 @@ hi DiffText   cterm=bold ctermfg=Brown      ctermbg=LightYellow
 "Make signify playwell with colors, so change popup menu colors
 hi Pmenu ctermbg=DarkGrey ctermfg=LightGrey
 
+hi Search ctermbg=DarkGrey
+
 set diffopt+=iwhite
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 
@@ -381,6 +385,15 @@ omap ac <plug>(signify-motion-outer-pending)
 xmap ac <plug>(signify-motion-outer-visual)
 
 "ycm
+function! s:CustomizeYcmLocationWindow()
+  " Set the window height to 5.
+  5wincmd _
+  " Switch back to working window.
+  wincmd p
+endfunction
+
+autocmd User YcmLocationOpened call s:CustomizeYcmLocationWindow()
+
 nnoremap <leader>yf :YcmCompleter FixIt<CR>
 nnoremap <leader>yd :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>yD :YcmCompleter GoToDefinition<CR>

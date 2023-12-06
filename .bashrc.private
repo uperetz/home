@@ -107,6 +107,14 @@ function figtail() {
   echo "${cwd#"$(figroot)/"}"
 }
 
+function g3dir() {
+  echo "//$(figtail)/$1"
+}
+
+function blazetarget() {
+  echo "//$(figtail):$1"
+}
+
 function blazebin() {
   echo "$(figroot)/blaze-bin/$(figtail)"
 }
@@ -176,7 +184,7 @@ function hgdifff() {
 }
 
 function hgmsg() {
-  hg log -v -r .
+  hg log -v -r "${1:-.}"
 }
 
 function hgdiff() {
@@ -233,11 +241,29 @@ alias tm=/google/data/ro/teams/tenantmanager/tools/tm
 alias pubsub=/google/bin/releases/goops/pubsub/pubsub
 alias clean_resources='blaze run //net/fabric/monitoring/cloud_sdn_management/cep_workflows/libs:delete_resources --'
 alias local_guitar='/google/data/ro/projects/testing/integrate/local_guitar.par'
-alias guitar_onseshot='/google/data/ro/projects/testing/integrate/guitra_oneshot.par'
 alias guitar_sandman='/google/data/ro/projects/testing/integrate/guitar_sandman'
 alias g3python='/google/bin/users/joshuamorton/g3python/g3python.par'
 alias cloud_traceroute="/google/data/ro/teams/network-detective/cloud_traceroute"
 alias gcloud='/google/data/ro/teams/cloud-sdk/gcloud'
+alias bgrep=/google/bin/releases/borgtools/bgrep/bgrep.par
+alias bkill=/google/bin/releases/borgtools/bkill/bkill.par
+alias btail=/google/bin/releases/borgtools/btail/btail.par
+alias bkick="bgrep --restart"
+alias prodspec=/google/bin/releases/rollouts/prodspec/prodspec
+alias simulate_cli=/google/bin/releases/rollouts/config/simulate/simulate_cli
+alias annealing='/google/bin/releases/rollouts/annealing/annealing'
+alias autocap='/google/bin/releases/autocap/cli/autocap'
+alias traffic_ctl='/google/data/ro/projects/production/traffic_ctl.par'
+alias techlock_sre='/google/bin/releases/consensus-sre/public/techlock'
+alias autocap='/google/bin/releases/autocap/cli/autocap'
+alias lbresolve='/google/bin/releases/gslb-team/public/lbresolve/lbresolve'
+alias cloud-cluster-moveit-tool-proxy=/google/src/head/depot/google3/cloud/cluster/tools/cloud-cluster-moveit-tool-proxy.sh
+alias tpc-partner-doc=/google/bin/releases/tpc-partner-docs/tpc-partner-doc
+alias capabilities="/google/data/ro/projects/borg-sre/capabilities"
+alias hg=chg
+alias hgmail="hg mail &>/dev/null -r . -m"
+alias hgmailsync="hg mail &>/dev/null -r . --autosubmit --autosync -m"
+alias hgsubmit="hg submit &>/dev/null"
 
 # Cloud variables
 # export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
@@ -264,4 +290,5 @@ fi
 
 gcertstatus || gcert
 
+export NETSLO_JOBS=(dynamic-reachability topology-reader static-resource-publisher local-reflector global-reflector flow-selector) # passive-collector joiner cloud-monarch-scraper
 export PATH=$PATH:/usr/games
