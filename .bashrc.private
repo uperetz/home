@@ -264,6 +264,7 @@ alias hg=chg
 alias hgmail="hg mail &>/dev/null -r . -m"
 alias hgmailsync="hg mail &>/dev/null -r . --autosubmit --autosync -m"
 alias hgsubmit="hg submit &>/dev/null"
+alias emergency_upsize='/google/bin/releases/autopilot-team/emergency_upsize'
 
 # Cloud variables
 # export CEP_CREDENTIALS=/usr/local/google/home/pururia/cep_runner_key.json
