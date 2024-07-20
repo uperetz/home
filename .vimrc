@@ -22,6 +22,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'jeetsukumaran/vim-indentwise'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Konfekt/FastFold'
+Plugin 'vim-autoformat/vim-autoformat'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -333,6 +334,14 @@ function! ShowFuncName()
 endfunction
 map f :echo ShowFuncName() <CR>
 
+" Autoformat
+set textwidth=80
+set cino="(
+let g:formatdef_my_custom_sh = '"shfmt -i 2"'
+let g:formatters_sh = ['my_custom_sh']
+autocmd FileType vim,tex let b:autoformat_autoindent=0
+au BufWrite * :Autoformat
+
 "Makefiles
 autocmd FileType make setlocal noexpandtab
 
@@ -354,7 +363,7 @@ hi SignColumn ctermbg=None
 hi DiffAdd    cterm=bold ctermfg=LightGreen ctermbg=None
 hi DiffChange cterm=None ctermfg=None       ctermbg=None
 hi DiffDelete cterm=bold ctermfg=LightRed   ctermbg=None
-hi DiffText   cterm=bold ctermfg=Brown      ctermbg=LightYellow
+hi DiffText   cterm=bold ctermfg=Black      ctermbg=LightYellow
 
 "Make signify playwell with colors, so change popup menu colors
 hi Pmenu ctermbg=DarkGrey ctermfg=LightGrey
