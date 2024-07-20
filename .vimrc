@@ -39,7 +39,7 @@ filetype plugin on
 " Put your non-Plugin stuff after this line
 
 "General editor definitions
-let g:my_personal_global_indent_width = 4
+let g:my_personal_global_indent_width = 2
 set autoindent
 set updatetime=100
 set nohlsearch
