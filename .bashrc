@@ -3,76 +3,77 @@
 [[ "$-" != *i* ]] && return
 
 # Setup screen
-if command -v screen &> /dev/null && [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
-    export PROMPT_COMMAND='/bin/echo -ne "\033k\033\0134"'
-    if screen -r > /dev/null; then exit; fi
-    if screen -x -p 0 > /dev/null; then exit; fi
-    exec screen
+if command -v screen &>/dev/null && [ -n "$SSH_CLIENT" ] && [[ "$TERM" != "screen"* ]]; then
+  export PROMPT_COMMAND='/bin/echo -ne "\033k\033\0134"'
+  if screen -r >/dev/null; then exit; fi
+  if screen -x -p 0 >/dev/null; then exit; fi
+  exec screen
 else
-    export PROMPT_COMMAND=''
-    if [[ "$TERM" == "screen"* ]]; then
-        screen_title_slicer() { echo "${1}"; }
-        # shellcheck disable=SC1003
-        screen_title_format='\ek%s\e\\'
-        screen_group() { screen -t "$1" //group; }
-        screen_mv() { screen -X group "$1"; }
-    else
-        screen_title_slicer() { echo "${1//[^[:print:]]/}"; } # Fix highlight on CentOS"
-        screen_title_format='\033]0;%s\007'
-    fi
+  export PROMPT_COMMAND=''
+  if [[ "$TERM" == "screen"* ]]; then
+    screen_title_slicer() { echo "${1}"; }
+    # shellcheck disable=SC1003
+    screen_title_format='\ek%s\e\\'
+    screen_group() { screen -t "$1" //group; }
+    screen_mv() { screen -X group "$1"; }
+  else
+    screen_title_slicer() { echo "${1//[^[:print:]]/}"; } # Fix highlight on CentOS"
+    screen_title_format='\033]0;%s\007'
+  fi
 fi
 
 ready="Ready!"
 
 shorten_long_paths() {
-    result=""
-    for dir in ${1//\// }; do
-        if [ ${#dir} -gt 14 ]; then
-            result="$result/${dir:0:5}..."
-        else
-            result="$result/$dir"
-        fi
-    done
-    if [ ${#result} -gt 80 ]; then
-        read -ra dirs <<< "${result//\// }"
-        result="/${dirs[0]}/.../${dirs[-3]}/${dirs[-2]}/${dirs[-1]}"
-    fi
-    if [ "${1:0:1}" == / ]; then
-        echo "${result}"
+  result=""
+  for dir in ${1//\// }; do
+    if [ ${#dir} -gt 14 ]; then
+      result="$result/${dir:0:5}..."
     else
-        echo "${result:1}"
+      result="$result/$dir"
     fi
+  done
+  if [ ${#result} -gt 80 ]; then
+    read -ra dirs <<<"${result//\// }"
+    result="/${dirs[0]}/.../${dirs[-3]}/${dirs[-2]}/${dirs[-1]}"
+  fi
+  if [ "${1:0:1}" == / ]; then
+    echo "${result}"
+  else
+    echo "${result:1}"
+  fi
 }
 
 # Also saves history!
 set_screen_window() {
-    case $BASH_COMMAND in
-        *.master_history) ;;
-        mhistory*) ;;
-        fhistory*) ;;
-        *)
-            echo "$BASH_COMMAND" >> ~/.master_history
-    esac
+  case $BASH_COMMAND in
+  *.master_history) ;;
+  mhistory*) ;;
+  fhistory*) ;;
+  *)
+    echo "$BASH_COMMAND" >>~/.master_history
+    ;;
+  esac
 
-    title_string=$1
-    [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
-    [ "$title_string" = "fg" ] && read -ra job < <( jobs %% 2> /dev/null )
-    [ "$title_string" = "fg " ] && read -ra job < <(jobs "${title_string:3} 2> /dev/null")
-    if [ ${#job[@]} -gt 0 ]; then
-        title_string=$(screen_title_slicer "${job[2]}")
-    fi
-    cwd=$PWD
-    if [ "${title_string::3}" = "cd " ]; then
-        cwd=$(  eval cd "$(awk '{print $2}' <<< "$BASH_COMMAND")" &> /dev/null && pwd)
-        [ -z "$cwd" ] && cwd=$PWD
-        title_string="$ready"
-    fi
-    [ "$title_string" = "cd" ] && title_string=$ready && cwd=$HOME
-    wdir=${cwd//$HOME/\~}
-    # shellcheck disable=SC2059
-    printf "$screen_title_format" "$HOSTNAME -- $(shorten_long_paths "$wdir")> $title_string" > "$(tty)"
-    unset job
-    unset title_string
+  title_string=$1
+  [ -z "$title_string" ] && title_string=$(screen_title_slicer "$BASH_COMMAND")
+  [ "$title_string" = "fg" ] && read -ra job < <(jobs %% 2>/dev/null)
+  [ "$title_string" = "fg " ] && read -ra job < <(jobs "${title_string:3} 2> /dev/null")
+  if [ ${#job[@]} -gt 0 ]; then
+    title_string=$(screen_title_slicer "${job[2]}")
+  fi
+  cwd=$PWD
+  if [ "${title_string::3}" = "cd " ]; then
+    cwd=$(eval cd "$(awk '{print $2}' <<<"$BASH_COMMAND")" &>/dev/null && pwd)
+    [ -z "$cwd" ] && cwd=$PWD
+    title_string="$ready"
+  fi
+  [ "$title_string" = "cd" ] && title_string=$ready && cwd=$HOME
+  wdir=${cwd//$HOME/\~}
+  # shellcheck disable=SC2059
+  printf "$screen_title_format" "$HOSTNAME -- $(shorten_long_paths "$wdir")> $title_string" >"$(tty)"
+  unset job
+  unset title_string
 }
 # Fix highlight on CentOS"
 
@@ -100,30 +101,30 @@ export EDITOR=vim
 
 #Useful aliases
 mhistory() {
-    tail -n "${1:-10}" ~/.master_history
+  tail -n "${1:-10}" ~/.master_history
 }
 fhistory() {
-    context=
-    [ -n "$3" ] && context="-A$3 -B$3"
-    if [ -n "$2" ]; then
-        amount=$2
-        [ -n "$context" ] && amount=$(( ($3*2+1) * amount))
-        # shellcheck disable=SC2086
-        grep --color $context -- "$1" ~/.master_history | uniq | tail -n "$amount"
-    else
-        # shellcheck disable=SC2086
-        grep --color $context -- "$1" ~/.master_history | uniq
-    fi
+  context=
+  [ -n "$3" ] && context="-A$3 -B$3"
+  if [ -n "$2" ]; then
+    amount=$2
+    [ -n "$context" ] && amount=$((($3 * 2 + 1) * amount))
+    # shellcheck disable=SC2086
+    grep --color $context -- "$1" ~/.master_history | uniq | tail -n "$amount"
+  else
+    # shellcheck disable=SC2086
+    grep --color $context -- "$1" ~/.master_history | uniq
+  fi
 }
 
 linediff() {
-    if [ -z "$1" ] || [ -z "$2" ]; then return; fi
-    f1=$(basename "$1")
-    f2=$(basename "$2")
-    cat -n "$1" > "/tmp/$f1"
-    cat -n "$2" > "/tmp/$f2"
-    vimdiff "/tmp/$f1" "/tmp/$f2"
-    rm "/tmp/$f1" "/tmp/$f2"
+  if [ -z "$1" ] || [ -z "$2" ]; then return; fi
+  f1=$(basename "$1")
+  f2=$(basename "$2")
+  cat -n "$1" >"/tmp/$f1"
+  cat -n "$2" >"/tmp/$f2"
+  vimdiff "/tmp/$f1" "/tmp/$f2"
+  rm "/tmp/$f1" "/tmp/$f2"
 }
 alias gitroot='git rev-parse --show-toplevel'
 alias gitsha='git rev-parse --short HEAD'
@@ -163,16 +164,16 @@ shopt -s histappend
 
 #Merge user Xresources
 function pdfopt {
-    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=opt_"$1" "$1"
+  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=opt_"$1" "$1"
 }
 
 function append_path {
-    PATH="$1:$PATH"
-    for f in "$1"/*; do
-        if [ -d "$f" ]; then
-            append_path "$f"
-        fi
-    done 2> /dev/null
+  PATH="$1:$PATH"
+  for f in "$1"/*; do
+    if [ -d "$f" ]; then
+      append_path "$f"
+    fi
+  done 2>/dev/null
 }
 append_path ~/bin
 
@@ -190,22 +191,22 @@ append_path ~/bin
 #   done
 
 function putserver {
-    server=$1
-    shift
-    args=$(($#-1))
-    [ "$args" -lt 1 ] && echo "Must provide out path explicitly" && return
-    sources=( "$@" )
-    o=${sources[${#sources[@]}-1]}
-    unset 'sources[${#sources[@]}-1]'
-    rsync -p -r -P -m "${sources[@]}" "$server:$o"
+  server=$1
+  shift
+  args=$(($# - 1))
+  [ "$args" -lt 1 ] && echo "Must provide out path explicitly" && return
+  sources=("$@")
+  o=${sources[${#sources[@]} - 1]}
+  unset 'sources[${#sources[@]}-1]'
+  rsync -p -r -P -m "${sources[@]}" "$server:$o"
 }
 
 function getserver {
-    server=$1
-    shift
-    o=$2;
-    [ -z "$o" ] && o="./";
-    rsync -p -r -P -m "$server:$1" "$o"
+  server=$1
+  shift
+  o=$2
+  [ -z "$o" ] && o="./"
+  rsync -p -r -P -m "$server:$1" "$o"
 }
 
 function listdisp {
@@ -217,10 +218,10 @@ function listdisp {
 
 #Git completion
 if [ -f /etc/bash_completion.d/git ]; then
-    # shellcheck disable=SC1091
-    . /etc/bash_completion.d/git
+  # shellcheck disable=SC1091
+  . /etc/bash_completion.d/git
 elif [ -f ~/.git_completion.bash ]; then
-    . ~/.git_completion.bash
+  . ~/.git_completion.bash
 fi
 
 # Utility
@@ -238,11 +239,11 @@ function sed-multiline {
 
   close_braces=""
   i=2
-  if [ "$i" -gt $(($#-2)) ]; then
+  if [ "$i" -gt $(($# - 2)) ]; then
     echo "Usage: sed [-sed_flags ...] 'line 1' ['line 2'...] replacement file"
     return
   fi
-  while [ "$i" -le $(($#-2)) ]; do
+  while [ "$i" -le $(($# - 2)) ]; do
     sed_string+=" {N; \#\n${!i}#"
     close_braces+="}"
     ((i++))
@@ -255,24 +256,24 @@ function sed-multiline {
 }
 
 if [ -f "${HOME}/.bashrc.private" ]; then
-    # shellcheck disable=SC1091
-    . "${HOME}/.bashrc.private"
+  # shellcheck disable=SC1091
+  . "${HOME}/.bashrc.private"
 fi
 # shellcheck disable=SC2154
 export https_proxy="$http_proxy"
 export ftp_proxy="$http_proxy"
 
 if [[ $(uname -r) = *microsoft-standard* ]]; then
-    # WSL 2 + XMING shennenigans
-    port=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf)
-    export DISPLAY="${port}:0.0"
+  # WSL 2 + XMING shennenigans
+  port=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf)
+  export DISPLAY="${port}:0.0"
 elif [ -z "$DISPLAY" ]; then
-    export DISPLAY="localhost:0.0"
+  export DISPLAY="localhost:0.0"
 fi
 
 userresources=.Xresources
 if [ -f $userresources ]; then
-    /usr/bin/xrdb -merge $userresources
+  /usr/bin/xrdb -merge $userresources
 fi
 # xset b off
 set_screen_window "$ready"
