@@ -92,6 +92,26 @@ if (length($0) > 14) {
 else print $0;}'"'"')'
 PS1='\[\e[1;34m\]$(eval "echo ${MYPS}")>\[\e[0m\]'
 
+install_tools() {
+  # List of tools I usually need
+  sudo apt install clang-format
+  sudo apt install shfmt
+  sudo apt install connect-proxy
+  sudo apt install python3-tk
+  sudo apt install python3-matplotlib
+  sudo apt install python3-pandas
+  sudo apt install python3-astropy
+  sudo apt install vim-gtk
+  sudo apt install bash-completion
+  sudo apt install bc
+  sudo apt install python3-flake8
+  sudo apt install flake8
+  sudo apt install locate
+  sudo apt install shellcheck
+  sudo apt install rename
+  sudo apt install imagemagick
+}
+
 #general dirs
 export PYTHONPATH=~/sources
 
